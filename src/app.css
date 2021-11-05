@@ -1,0 +1,11 @@
+:root {
+	--anchor-color: #3a87fe;
+}
+
+body {
+	font-family: sans-serif;
+}
+
+a {
+	color: var(--anchor-color);
+}
