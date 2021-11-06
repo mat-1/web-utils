@@ -99,7 +99,6 @@
 	}
 
 	$: {
-		console.log('editableTextareaEl', editableTextareaEl)
 		if (
 			editableTextareaEl &&
 			value !== getText(editableTextareaEl as unknown as HTMLTextAreaElement)
