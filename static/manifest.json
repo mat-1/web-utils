@@ -1,0 +1,22 @@
+{
+	"short_name": "Web Utils",
+	"name": "Web Utils",
+	"start_url": "/",
+	"icons": [
+		{
+			"src": "favicon-512.png",
+			"type": "image/png",
+			"sizes": "512x512"
+		},
+		{
+			"src": "favicon.png",
+			"type": "image/png",
+			"sizes": "16x16"
+		}
+	],
+	"background_color": "#21222c",
+	"display": "standalone",
+	"scope": "/",
+	"theme_color": "#21222c",
+	"description": "Random useful things for developers"
+}
