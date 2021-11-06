@@ -54,11 +54,7 @@ const base64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/
 const nonBase64CharsRegex = /[^A-Za-z0-9+/=]|=+$/g
 
 export function b64encode(str: string): string {
-	try {
-		return btoa(str)
-	} catch (e) {
-		return btoa(unescape(encodeURIComponent(str)))
-	}
+	return btoa(unescape(encodeURIComponent(str.replace(/[\ud800-\udfff]/g, '�'))))
 }
 
 /** A base64 decoder that doesn't complain about invalid characters */

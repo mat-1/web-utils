@@ -4,7 +4,7 @@
 
 <ul>
 	<ListItem href="/base64">Base64 Encode<wbr />/Decode</ListItem>
-	<ListItem href="/diff">Text differ</ListItem>
+	<ListItem href="/diff">Text diff</ListItem>
 	<ListItem href="/url">URL Encode<wbr />/Decode</ListItem>
 	<ListItem href="/basen">Number Base Converter</ListItem>
 	<ListItem href="/lipsum">Lorem Ipsum Generator</ListItem>
