@@ -9,14 +9,16 @@ const config = {
 	kit: {
 		// hydrate the <div id="svelte"> element in src/app.html
 		target: '#svelte',
-		vite: {
-			server: {
-				hmr: {
-					protocol: 'wss',
-					port: 443,
-				},
-			},
-		},
+		vite: process.env.REPL_ID
+			? {
+					hmr: {
+						server: {
+							protocol: 'wss',
+							port: 443,
+						},
+					},
+			  }
+			: undefined,
 	},
 }
 

@@ -1,8 +1,25 @@
 <script lang="ts">
-	import { onMount } from 'svelte'
+	import { getValue, storeValue } from './utils'
+	import { browser } from '$app/env'
+	import { createEventDispatcher, onMount } from 'svelte'
 
-	export let value: string = ''
-	export let render: ((text: string) => string) | null = null
+	export let value = ''
+	export let id: string | undefined = undefined
+	export let label: string | undefined = undefined
+	/** A function that renders the user's plaintext into HTML */
+	export let render: (text: string) => string
+
+	const dispatch = createEventDispatcher()
+
+	function getText(el: HTMLTextAreaElement) {
+		return el.innerText
+	}
+
+	let editableTextareaEl: HTMLDivElement
+
+	function setHtml(el: HTMLTextAreaElement, text: string) {
+		el.innerHTML = text
+	}
 
 	function handlePaste(e: ClipboardEvent) {
 		const text = e.clipboardData.getData('text/plain')
@@ -16,7 +33,7 @@
 	const history: HistoryItem[] = []
 	function addStateToHistory(el: HTMLTextAreaElement) {
 		history.push({
-			text: el.innerText,
+			text: getText(el),
 			pos: el.selectionStart,
 		})
 	}
@@ -24,13 +41,20 @@
 	onMount(() => {
 		history.push({ text: value, pos: 0 })
 	})
-	function caret(element: Node) {
-		const range = window.getSelection().getRangeAt(0)
-		const prefix = range.cloneRange()
-		prefix.selectNodeContents(element)
-		prefix.setEnd(range.endContainer, range.endOffset)
-		return prefix.toString().length
+
+	function caret(element: Node): number {
+		const sel = window.getSelection()
+		const range = sel.getRangeAt(0)
+
+		const range2 = range.cloneRange()
+		range2.setStart(element, 0)
+		range2.setEnd(range.endContainer, range.endOffset)
+		sel.removeAllRanges()
+		sel.addRange(range2)
+		const value = sel.toString().replace(/\r\n/g, '\n')
+		return value.length
 	}
+
 	function setCaret(pos: number, parent: Node) {
 		for (const node of parent.childNodes as unknown as Iterable<Node>) {
 			if (node.nodeType == Node.TEXT_NODE) {
@@ -56,20 +80,35 @@
 			e.preventDefault()
 		}
 	}
+
 	function handleInput(e) {
 		const el = e.target as HTMLTextAreaElement
+		const rendered = render(getText(el))
 		if (e.data && (e.data.charCodeAt(0) >= 32 || e.data.charCodeAt(0) == 0x20)) {
 			const pos = caret(el)
 			// we use innertext instead of textContent since innerText is aware of line breaks and textContent isn't
-			el.innerHTML = render(el.innerText)
+			setHtml(el, rendered)
 			setCaret(pos, el)
 		} else if (e.inputType == 'deleteContentBackward' || e.inputType == 'deleteContentForward') {
 			const pos = caret(el)
-			el.innerHTML = render(el.innerText)
+			setHtml(el, rendered)
 			setCaret(pos, el)
 		}
-		value = el.innerText
+		value = getText(el)
+		dispatch('input', { value })
 	}
+
+	$: {
+		console.log('editableTextareaEl', editableTextareaEl)
+		if (
+			editableTextareaEl &&
+			value !== getText(editableTextareaEl as unknown as HTMLTextAreaElement)
+		) {
+			const rendered = render(value)
+			setHtml(editableTextareaEl as unknown as HTMLTextAreaElement, rendered)
+		}
+	}
+
 	let spacesTyped = 0
 	function handleBeforeInput(e) {
 		const el = e.target as HTMLTextAreaElement
@@ -79,9 +118,9 @@
 			let pos = caret(el)
 			const historyItem = history.pop()
 			if (historyItem) {
-				el.innerHTML = render(historyItem.text)
+				setHtml(el, historyItem.text)
 				// if the pos is higher than the actual length, put it at the end
-				if (pos > el.innerText.length) pos = el.innerText.length
+				if (pos > getText(el).length) pos = getText(el).length
 				setCaret(pos, el)
 			}
 		} else {
@@ -99,32 +138,72 @@
 			}
 		}
 	}
+
+	let mounted = false
+	onMount(() => {
+		mounted = true
+		try {
+			// we actually encode the data in localStorage as b64 since otherwise it complains when we put binary
+			value = id ? getValue(id) : ''
+		} catch (e) {
+			value = ''
+		}
+	})
+
+	$: {
+		if (id && browser && mounted) storeValue(id, value)
+	}
 </script>
 
-<noscript>
-	<p>The editor won't work properly without JavaScript, please enable it.</p>
-	<style>
-		#editable-text-area {
-			display: none;
-		}
-	</style>
-</noscript>
-<div
-	id="editable-text-area"
-	contenteditable
-	on:paste|preventDefault={handlePaste}
-	on:input={handleInput}
-	on:beforeinput={handleBeforeInput}
-	on:keydown={handleKeyDown}
-/>
+<div class="editable-textarea-container">
+	{#if label && id}
+		<span class="label" id="{id}-label" on:click={() => document.getElementById(id).focus()}>
+			{label}
+		</span>
+	{/if}
+
+	<div
+		{id}
+		class="editable-textarea"
+		contenteditable
+		on:paste|preventDefault={handlePaste}
+		on:input={handleInput}
+		on:beforeinput={handleBeforeInput}
+		on:keydown={handleKeyDown}
+		bind:this={editableTextareaEl}
+		aria-labelledby={label && id ? `${id}-label` : undefined}
+	/>
+</div>
 
 <style>
-	#editable-text-area {
-		background-color: var(--alternate-background-color);
-		max-width: 50em;
-		min-height: 20em;
+	.editable-textarea {
+		border: 3px solid var(--background-color-alt);
+		border-radius: 0.5em;
+		resize: none;
+		width: 100%;
+		height: 100%;
+		display: block;
+		margin: 0;
 		padding: 0.5em;
-		border-radius: 0.25em;
-		background-color: var(--alternate-background-color);
+		font-family: inherit;
+		background-color: var(--background-color);
+		color: var(--text-color);
+		flex-grow: 1;
+		white-space: break-spaces;
+	}
+
+	.label {
+		color: var(--text-color-alt);
+		font-size: 0.8em;
+		position: relative;
+		height: max-content;
+		margin-left: 0.5em;
+	}
+
+	.editable-textarea-container {
+		height: 100%;
+		overflow: hidden;
+		display: flex;
+		flex-direction: column;
 	}
 </style>

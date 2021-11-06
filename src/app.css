@@ -1,11 +1,33 @@
 :root {
+	--background-color: #21222c;
+	--background-color-alt: #282a36;
+	--background-color-alt-2: #343746;
+	--background-color-alt-3: #3d3d4f;
+
+	--text-color: #fff;
+	--text-color-alt: #ccc;
+	--text-color-dark: #555;
+
 	--anchor-color: #3a87fe;
+}
+
+html {
+	height: 100%;
 }
 
 body {
 	font-family: sans-serif;
+	margin: 0;
+	background-color: var(--background-color);
+	color: var(--text-color);
 }
 
 a {
 	color: var(--anchor-color);
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
 }

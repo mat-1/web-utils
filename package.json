@@ -1,6 +1,7 @@
 {
 	"name": "sveltekit-template",
 	"version": "0.0.1",
+	"license": "MIT",
 	"scripts": {
 		"dev": "svelte-kit dev",
 		"dev:host": "svelte-kit dev --host",
@@ -31,6 +32,7 @@
 	"dependencies": {
 		"@fontsource/fira-mono": "^4.5.0",
 		"@lukeed/uuid": "^2.0.0",
+		"anchorme": "^2.1.2",
 		"cookie": "^0.4.1"
 	}
 }
