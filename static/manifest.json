@@ -1,6 +1,6 @@
 {
-	"short_name": "svelte-pwa",
-	"name": "svelte-test-pwa",
+	"short_name": "Web Utils",
+	"name": "Web Utils",
 	"start_url": "/",
 	"icons": [
 		{
