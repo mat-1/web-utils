@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Label from '$lib/Label.svelte'
 	import RenderedTextArea from '$lib/RenderedTextArea.svelte'
 	import TextArea from '$lib/TextArea.svelte'
 	import { encodeHtml } from '$lib/utils'
@@ -38,7 +39,10 @@
 		<TextArea bind:value={after} id="diff-after" label="After" on:input={renderDiff} />
 	</div>
 	<div class="diff-container">
-		<p class="rendered-diff">{@html renderedDiff}</p>
+		<Label id="diff-label" for="rendered-diff" simulateLabel>Diff</Label>
+		<p class="rendered-diff" id="rendered-diff" aria-labelledby="diff-label">
+			{@html renderedDiff}
+		</p>
 	</div>
 </div>
 
@@ -73,5 +77,9 @@
 	.rendered-diff {
 		white-space: pre-wrap;
 		word-wrap: break-word;
+	}
+
+	p {
+		margin: 0;
 	}
 </style>
