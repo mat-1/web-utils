@@ -31,6 +31,7 @@
 		min-height: 100vh;
 		--sidebar-width: 15rem;
 		--content-left-margin: var(--sidebar-width);
+		--margin-top: 2em;
 	}
 
 	#sidebar-toggle {
@@ -55,7 +56,7 @@
 
 	@media (max-width: 440px) {
 		nav {
-			padding-top: 2.5em;
+			padding-top: var(--margin-top);
 		}
 		#page:not(.sidebar-hidden) nav {
 			right: 0;
@@ -69,10 +70,16 @@
 		#page:not(.sidebar-hidden) #sidebar-toggle {
 			margin-left: 0;
 		}
+
+		#sidebar-toggle {
+			padding: 1.25em;
+		}
+		#page {
+			--margin-top: 2.75em;
+		}
 	}
 
 	main {
-		--margin-top: 2em;
 		margin-left: var(--content-left-margin);
 		transition: margin-left 200ms ease;
 		margin-top: var(--margin-top);
