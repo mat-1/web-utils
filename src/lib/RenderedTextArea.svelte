@@ -190,6 +190,7 @@
 		color: var(--text-color);
 		flex-grow: 1;
 		white-space: break-spaces;
+		font-size: inherit;
 	}
 
 	.label {

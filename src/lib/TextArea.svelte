@@ -51,6 +51,7 @@
 		background-color: var(--background-color);
 		color: var(--text-color);
 		flex-grow: 1;
+		font-size: inherit;
 	}
 
 	label {
