@@ -12,7 +12,6 @@
 
 	function renderDiff() {
 		const diff = fastDiff(before, after)
-		console.log(before, after, diff)
 		renderedDiff = ''
 		for (const [type, difference] of diff) {
 			switch (type) {
@@ -27,7 +26,6 @@
 					break
 			}
 		}
-		console.log(renderedDiff)
 	}
 	onMount(renderDiff)
 </script>
@@ -58,7 +56,8 @@
 	}
 
 	.before-container,
-	.after-container {
+	.after-container,
+	.diff-container {
 		margin: 0.5em;
 	}
 
@@ -68,7 +67,11 @@
 	.rendered-diff :global(.diff-removed) {
 		background-color: #fd2c2166;
 	}
+	.diff-container {
+		overflow-x: hidden;
+	}
 	.rendered-diff {
-		white-space: pre;
+		white-space: pre-wrap;
+		word-wrap: break-word;
 	}
 </style>

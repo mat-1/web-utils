@@ -2,6 +2,7 @@
 	import { createEventDispatcher, onMount } from 'svelte'
 	import { browser } from '$app/env'
 	import { getValue, storeValue } from './utils'
+	import Label from './Label.svelte'
 
 	export let id: string | undefined
 	export let value = ''
@@ -32,7 +33,7 @@
 
 <div class="textarea-container">
 	{#if label && id}
-		<label for={id}>{label}</label>
+		<Label for={id}>{label}</Label>
 	{/if}
 	<textarea bind:value on:input={onInput} {id} />
 </div>

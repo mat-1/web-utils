@@ -2,6 +2,7 @@
 	import { getValue, storeValue } from './utils'
 	import { browser } from '$app/env'
 	import { createEventDispatcher, onMount } from 'svelte'
+	import Label from './Label.svelte'
 
 	export let value = ''
 	export let id: string | undefined = undefined
@@ -160,9 +161,7 @@
 
 <div class="editable-textarea-container">
 	{#if label && id}
-		<span class="label" id="{id}-label" on:click={() => document.getElementById(id).focus()}>
-			{label}
-		</span>
+		<Label for={id} id="{id}-label" simulateLabel>{label}</Label>
 	{/if}
 
 	<div
@@ -194,14 +193,6 @@
 		flex-grow: 1;
 		white-space: break-spaces;
 		font-size: inherit;
-	}
-
-	.label {
-		color: var(--text-color-alt);
-		font-size: 0.8em;
-		position: relative;
-		height: max-content;
-		margin-left: 0.5em;
 	}
 
 	.editable-textarea-container {
