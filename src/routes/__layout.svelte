@@ -31,7 +31,7 @@
 		min-height: 100vh;
 		--sidebar-width: 15rem;
 		--content-left-margin: var(--sidebar-width);
-		--margin-top: 2em;
+		--margin-top: 2.75em;
 	}
 
 	#sidebar-toggle {
@@ -40,7 +40,7 @@
 		background: none;
 		border: none;
 		width: max-content;
-		padding: 1em;
+		padding: 1.25em;
 		z-index: 3;
 	}
 
@@ -69,13 +69,6 @@
 		}
 		#page:not(.sidebar-hidden) #sidebar-toggle {
 			margin-left: 0;
-		}
-
-		#sidebar-toggle {
-			padding: 1.25em;
-		}
-		#page {
-			--margin-top: 2.75em;
 		}
 	}
 
