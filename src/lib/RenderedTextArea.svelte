@@ -9,6 +9,9 @@
 	/** A function that renders the user's plaintext into HTML */
 	export let render: (text: string) => string
 
+	/** Whether the text area cannot be manually edited */
+	export let readonly = false
+
 	const dispatch = createEventDispatcher()
 
 	function getText(el: HTMLTextAreaElement) {
@@ -84,7 +87,9 @@
 
 	function handleInput(e) {
 		const el = e.target as HTMLTextAreaElement
-		const rendered = render(getText(el))
+		value = getText(el)
+		dispatch('input', { value })
+		const rendered = render(value)
 		if (e.data && (e.data.charCodeAt(0) >= 32 || e.data.charCodeAt(0) == 0x20)) {
 			const pos = caret(el)
 			// we use innertext instead of textContent since innerText is aware of line breaks and textContent isn't
@@ -95,8 +100,6 @@
 			setHtml(el, rendered)
 			setCaret(pos, el)
 		}
-		value = getText(el)
-		dispatch('input', { value })
 	}
 
 	$: {
@@ -165,7 +168,7 @@
 	<div
 		{id}
 		class="editable-textarea"
-		contenteditable
+		contenteditable={!readonly || undefined}
 		on:paste|preventDefault={handlePaste}
 		on:input={handleInput}
 		on:beforeinput={handleBeforeInput}

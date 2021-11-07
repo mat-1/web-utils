@@ -4,7 +4,7 @@
 	import { getValue, storeValue } from './utils'
 
 	export let id: string | undefined
-	export let value: string = ''
+	export let value = ''
 	export let label: string | undefined
 
 	const dispatch = createEventDispatcher()

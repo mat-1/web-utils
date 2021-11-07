@@ -32,8 +32,8 @@
 	/* stack the containers on top of each other */
 	.container {
 		display: grid;
-		grid-template-columns: 1fr;
-		grid-template-rows: 1fr 1fr;
+		grid-template-columns: 1fr 1fr;
+		grid-template-rows: 1fr;
 		position: absolute;
 		top: 0;
 		left: 0;
