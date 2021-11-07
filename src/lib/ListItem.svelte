@@ -9,9 +9,9 @@
 </script>
 
 {#if href}
-	<a {href}><li class:selected={isThisPage}><slot /></li></a>
+	<a {href} on:click><li class:selected={isThisPage}><slot /></li></a>
 {:else}
-	<li class:selected={isThisPage}><slot /></li>
+	<li class:selected={isThisPage} on:click><slot /></li>
 {/if}
 
 <style>

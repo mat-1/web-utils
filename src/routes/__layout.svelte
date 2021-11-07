@@ -1,13 +1,29 @@
 <script lang="ts">
+	import { browser } from '$app/env'
+	import { page } from '$app/stores'
+	import { base } from '$app/paths'
+
 	import HamburgerMenu from '$lib/icons/HamburgerMenu.svelte'
 	import UtilitiesList from '$lib/UtilitiesList.svelte'
 	import { onMount } from 'svelte'
 	import '../app.css'
 
 	let sidebarHidden = false
-	onMount(() => {
-		sidebarHidden = window.matchMedia('(max-width: 440px)').matches && !(location.pathname === '/')
-	})
+
+	function updateSidebarForMobile() {
+		sidebarHidden =
+			window.matchMedia('(max-width: 440px)').matches &&
+			location.pathname !== base.replace(/^\/$/g, '') + '/'
+		console.log('updateSidebarForMobile', location.pathname, sidebarHidden)
+	}
+
+	// hack so sveltekit runs this every time the page changes
+	$: $page,
+		(() => {
+			// we wait a frame so the sidebar hiding animation plays
+			if (browser) requestAnimationFrame(updateSidebarForMobile)
+		})()
+	onMount(updateSidebarForMobile)
 </script>
 
 <div id="page" class:sidebar-hidden={sidebarHidden}>
