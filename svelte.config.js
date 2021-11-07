@@ -20,7 +20,6 @@ const config = {
 	kit: {
 		adapter: staticAdapter(),
 		target: '#svelte',
-		ssr: false,
 
 		vite: {
 			hmr: process.env.REPL_ID
