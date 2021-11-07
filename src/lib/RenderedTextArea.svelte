@@ -12,7 +12,8 @@
 	const dispatch = createEventDispatcher()
 
 	function getText(el: HTMLTextAreaElement) {
-		return el.innerText
+		// remove the trailing newline
+		return el.innerText.replace(/\n$/, '')
 	}
 
 	let editableTextareaEl: HTMLDivElement

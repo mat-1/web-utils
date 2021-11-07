@@ -16,9 +16,6 @@
 
 <style>
 	li {
-		/* border: 2px solid var(--background-color-alt-2); */
-		/* background-color: var(--background-color-alt-2); */
-		/* background-color: var(--background-color); */
 		padding: 0.25em 1em;
 		border-radius: 0.25em;
 		word-wrap: break-word;

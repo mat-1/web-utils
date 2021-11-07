@@ -8,12 +8,10 @@
 
 	function updateEncoded() {
 		if (b64encode(decoded) !== encoded) encoded = b64encode(decoded)
-		console.log('decoded', decoded, '->', encoded)
 	}
 
 	function updateDecoded() {
 		if (b64decode(encoded) !== decoded) decoded = b64decode(encoded)
-		console.log('encoded', encoded, '->', decoded)
 	}
 </script>
 

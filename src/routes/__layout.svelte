@@ -1,12 +1,23 @@
 <script lang="ts">
+	import HamburgerMenu from '$lib/icons/HamburgerMenu.svelte'
 	import UtilitiesList from '$lib/UtilitiesList.svelte'
+	import { onMount } from 'svelte'
 	import '../app.css'
+
+	let sidebarHidden = false
+	onMount(() => {
+		sidebarHidden = window.matchMedia('(max-width: 440px)').matches && !(location.pathname === '/')
+	})
 </script>
 
-<div id="page">
+<div id="page" class:sidebar-hidden={sidebarHidden}>
 	<nav>
 		<UtilitiesList />
 	</nav>
+
+	<button id="sidebar-toggle" on:click={() => (sidebarHidden = !sidebarHidden)}>
+		<HamburgerMenu />
+	</button>
 
 	<main>
 		<slot />
@@ -18,7 +29,18 @@
 		display: flex;
 		flex-direction: column;
 		min-height: 100vh;
-		--sidebar-width: 15em;
+		--sidebar-width: 15rem;
+		--content-left-margin: var(--sidebar-width);
+	}
+
+	#sidebar-toggle {
+		margin-left: var(--content-left-margin);
+		transition: margin-left 200ms ease;
+		background: none;
+		border: none;
+		width: max-content;
+		padding: 1em;
+		z-index: 3;
 	}
 
 	nav {
@@ -26,12 +48,50 @@
 		width: var(--sidebar-width);
 		height: 100%;
 		position: fixed;
+		left: 0;
+		transition: left 200ms ease;
+		z-index: 2;
+	}
+
+	@media (max-width: 440px) {
+		nav {
+			padding-top: 2.5em;
+		}
+		#page:not(.sidebar-hidden) nav {
+			right: 0;
+		}
+		#page:not(.sidebar-hidden) {
+			--sidebar-width: 100vw;
+		}
+		#page:not(.sidebar-hidden) main {
+			display: none;
+		}
+		#page:not(.sidebar-hidden) #sidebar-toggle {
+			margin-left: 0;
+		}
 	}
 
 	main {
-		margin-left: var(--sidebar-width);
-		padding: 1em;
-		min-height: 100vh;
-		position: relative;
+		--margin-top: 2em;
+		margin-left: var(--content-left-margin);
+		transition: margin-left 200ms ease;
+		margin-top: var(--margin-top);
+		padding: 0.5em;
+		min-height: calc(100vh - var(--margin-top));
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		display: grid;
+		overflow-x: auto;
+	}
+
+	#page.sidebar-hidden {
+		--content-left-margin: 0;
+	}
+
+	.sidebar-hidden nav {
+		left: calc(0em - var(--sidebar-width));
 	}
 </style>

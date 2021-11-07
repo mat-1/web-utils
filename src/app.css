@@ -5,10 +5,10 @@
 	--background-color-alt-3: #3d3d4f;
 
 	--text-color: #fff;
-	--text-color-alt: #ccc;
-	--text-color-dark: #555;
+	--text-color-alt: #ccd;
+	--text-color-dark: #556;
 
-	--anchor-color: #3a87fe;
+	--anchor-color: #3da1ff;
 }
 
 html {
@@ -30,4 +30,8 @@ a {
 *::before,
 *::after {
 	box-sizing: border-box;
+}
+
+button {
+	cursor: pointer;
 }
