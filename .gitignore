@@ -8,3 +8,5 @@ node_modules
 /.config
 /.cache
 yarn-error.log
+/.vercel_build_output
+/_routes.json

@@ -1,5 +1,15 @@
 import preprocess from 'svelte-preprocess'
 import staticAdapter from '@sveltejs/adapter-static'
+import glob from 'fast-glob'
+import fs from 'fs'
+
+const routes = glob
+	.sync('src/routes/**/!(_)*.svelte')
+	.filter((page) => {
+		return !page.includes(']')
+	})
+	.map((r) => '/' + r.replace(/^src\/routes\//, '').replace(/(index)?\.svelte$/, ''))
+fs.writeFileSync('_routes.json', JSON.stringify(routes))
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -10,16 +20,18 @@ const config = {
 	kit: {
 		adapter: staticAdapter(),
 		target: '#svelte',
-		vite: process.env.REPL_ID
-			? {
-					hmr: {
+		ssr: false,
+
+		vite: {
+			hmr: process.env.REPL_ID
+				? {
 						server: {
 							protocol: 'wss',
 							port: 443,
 						},
-					},
-			  }
-			: undefined,
+				  }
+				: undefined,
+		},
 	},
 }
 
