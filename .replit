@@ -1,11 +1,11 @@
-run = "npm run dev:host"
+run = "yarn; npm run dev:host"
 
 [packager]
 language = "nodejs"
 
 [packager.features]
 packageSearch = true
-guessImports = true
+guessImports = false
 
 [languages.svelte]
 pattern = "**/*.svelte"
