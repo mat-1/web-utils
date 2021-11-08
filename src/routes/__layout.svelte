@@ -100,7 +100,7 @@
 		right: 0;
 		bottom: 0;
 		display: grid;
-		overflow-x: auto;
+		overflow: hidden;
 	}
 
 	#page.sidebar-hidden {

@@ -32,11 +32,13 @@
 </script>
 
 <div class="container">
-	<div class="before-container">
-		<TextArea bind:value={before} id="diff-before" label="Before" on:input={renderDiff} />
-	</div>
-	<div class="after-container">
-		<TextArea bind:value={after} id="diff-after" label="After" on:input={renderDiff} />
+	<div class="before-after-container">
+		<div class="before-container">
+			<TextArea bind:value={before} id="diff-before" label="Before" on:input={renderDiff} />
+		</div>
+		<div class="after-container">
+			<TextArea bind:value={after} id="diff-after" label="After" on:input={renderDiff} />
+		</div>
 	</div>
 	<div class="diff-container">
 		<Label id="diff-label" for="rendered-diff" simulateLabel>Diff</Label>
@@ -47,16 +49,35 @@
 </div>
 
 <style>
-	/* stack the containers on top of each other */
 	.container {
 		display: grid;
-		grid-template-columns: 1fr 1fr 1fr;
+		grid-template-columns: 2fr 1fr;
 		grid-template-rows: 1fr;
 		position: absolute;
 		top: 0;
 		left: 0;
 		right: 0;
 		bottom: 0;
+	}
+
+	.before-after-container {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		grid-template-rows: 1fr;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+	}
+
+	@media (max-width: 440px) {
+		.before-after-container {
+			grid-template-columns: 1fr;
+			grid-template-rows: 1fr 1fr;
+		}
+		.container {
+			grid-template-columns: 1fr 1fr;
+		}
 	}
 
 	.before-container,

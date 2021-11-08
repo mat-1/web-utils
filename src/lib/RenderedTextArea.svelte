@@ -159,22 +159,23 @@
 	}
 </script>
 
-<div class="editable-textarea-container">
+<div class="editable-textarea-container-container">
 	{#if label && id}
 		<Label for={id} id="{id}-label" simulateLabel>{label}</Label>
 	{/if}
-
-	<div
-		{id}
-		class="editable-textarea"
-		contenteditable={!readonly || undefined}
-		on:paste|preventDefault={handlePaste}
-		on:input={handleInput}
-		on:beforeinput={handleBeforeInput}
-		on:keydown={handleKeyDown}
-		bind:this={editableTextareaEl}
-		aria-labelledby={label && id ? `${id}-label` : undefined}
-	/>
+	<div class="editable-textarea-container">
+		<div
+			{id}
+			class="editable-textarea"
+			contenteditable={!readonly || undefined}
+			on:paste|preventDefault={handlePaste}
+			on:input={handleInput}
+			on:beforeinput={handleBeforeInput}
+			on:keydown={handleKeyDown}
+			bind:this={editableTextareaEl}
+			aria-labelledby={label && id ? `${id}-label` : undefined}
+		/>
+	</div>
 </div>
 
 <style>
@@ -191,14 +192,26 @@
 		background-color: var(--background-color);
 		color: var(--text-color);
 		flex-grow: 1;
-		white-space: break-spaces;
 		font-size: inherit;
+
+		white-space: pre-wrap;
+		word-wrap: break-word;
+		overflow-wrap: break-word;
+
+		position: absolute;
 	}
 
-	.editable-textarea-container {
+	.editable-textarea-container-container {
 		height: 100%;
 		overflow: hidden;
 		display: flex;
 		flex-direction: column;
+		width: 100%;
+		overflow-x: hidden;
+	}
+
+	.editable-textarea-container {
+		height: 100%;
+		position: relative;
 	}
 </style>

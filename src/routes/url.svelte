@@ -41,6 +41,13 @@
 		bottom: 0;
 	}
 
+	@media (max-width: 440px) {
+		.container {
+			grid-template-columns: 1fr;
+			grid-template-rows: 1fr 1fr;
+		}
+	}
+
 	.decoded-container,
 	.encoded-container {
 		margin: 0.5em;
