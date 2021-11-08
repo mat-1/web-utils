@@ -2,7 +2,7 @@
 	import { page } from '$app/stores'
 
 	export let href: string | undefined
-	export let isThisPage: boolean = false
+	export let isThisPage = false
 	page.subscribe((p) => {
 		isThisPage = href === p.path
 	})
@@ -11,7 +11,7 @@
 {#if href}
 	<a {href} on:click><li class:selected={isThisPage}><slot /></li></a>
 {:else}
-	<li class:selected={isThisPage} on:click><slot /></li>
+	<li class:selected={isThisPage} on:click tabindex="0"><slot /></li>
 {/if}
 
 <style>

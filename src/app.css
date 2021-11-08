@@ -36,3 +36,11 @@ a {
 button {
 	cursor: pointer;
 }
+
+input {
+	background-color: var(--background-color-alt);
+	border: 1px solid var(--background-color-alt-3);
+	border-radius: 0.25em;
+	font-size: 0.85em;
+	color: var(--text-color);
+}

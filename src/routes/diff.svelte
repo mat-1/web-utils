@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Label from '$lib/Label.svelte'
-	import RenderedTextArea from '$lib/RenderedTextArea.svelte'
 	import TextArea from '$lib/TextArea.svelte'
 	import { encodeHtml } from '$lib/utils'
 	import fastDiff from 'fast-diff'

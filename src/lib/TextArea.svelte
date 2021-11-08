@@ -55,14 +55,6 @@
 		font-size: inherit;
 	}
 
-	label {
-		color: var(--text-color-alt);
-		font-size: 0.8em;
-		position: relative;
-		height: max-content;
-		margin-left: 0.5em;
-	}
-
 	.textarea-container {
 		height: 100%;
 		overflow: hidden;
