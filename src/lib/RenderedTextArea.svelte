@@ -180,8 +180,6 @@
 
 <style>
 	.editable-textarea {
-		border: 3px solid var(--background-color-alt);
-		border-radius: 0.5em;
 		resize: none;
 		width: 100%;
 		height: 100%;
@@ -203,15 +201,16 @@
 
 	.editable-textarea-container-container {
 		height: 100%;
-		overflow: hidden;
 		display: flex;
 		flex-direction: column;
 		width: 100%;
-		overflow-x: hidden;
 	}
 
 	.editable-textarea-container {
 		height: 100%;
 		position: relative;
+		overflow-x: hidden;
+		border: 3px solid var(--background-color-alt);
+		border-radius: 0.5em;
 	}
 </style>
