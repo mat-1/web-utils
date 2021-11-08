@@ -66,12 +66,12 @@
 	@media (max-width: 440px) {
 		.search {
 			position: absolute;
-			top: 0.5em;
+			top: 0.325rem;
 			width: calc(100% - 3rem);
 			left: 2.5rem;
 		}
 		ul {
-			margin-top: -1.15em;
+			margin-top: -.85rem;
 		}
 	}
 	.search-container {
