@@ -58,6 +58,7 @@
 	ul {
 		list-style: none;
 		padding: 0;
+		margin-top: 0;
 	}
 	.search {
 		display: block;
@@ -71,7 +72,7 @@
 			left: 2.5rem;
 		}
 		ul {
-			margin-top: -.85rem;
+			margin-top: -0.85rem;
 		}
 	}
 	.search-container {
