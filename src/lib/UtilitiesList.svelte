@@ -42,6 +42,8 @@
 		})
 		.sort((a, b) => a.name.length - b.name.length)
 
+	let searchBarEl: HTMLInputElement
+
 	function onSearchKeydown(event: KeyboardEvent) {
 		console.log(event)
 		if (event.key === 'Enter') {
@@ -50,7 +52,15 @@
 			}
 		}
 	}
+
+	function onWindowKeydown(event: KeyboardEvent) {
+		if (event.ctrlKey && event.key === '/') {
+			searchBarEl.focus()
+		}
+	}
 </script>
+
+<svelte:window on:keydown={onWindowKeydown} />
 
 <div class="utilities-list-container">
 	<div class="search-container">
@@ -58,6 +68,7 @@
 			type="text"
 			placeholder="Search"
 			class="search"
+			bind:this={searchBarEl}
 			bind:value={searchQuery}
 			on:keydown={onSearchKeydown}
 		/>
