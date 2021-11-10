@@ -22,10 +22,9 @@ const config = {
 		target: '#svelte',
 
 		vite: {
-			hmr: process.env.REPL_ID
+			server: process.env.REPL_ID
 				? {
-						server: {
-							protocol: 'wss',
+						hmr: {
 							port: 443,
 						},
 				  }
