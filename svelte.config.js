@@ -25,6 +25,7 @@ const config = {
 			server: process.env.REPL_ID
 				? {
 						hmr: {
+							protocol: 'wss',
 							port: 443,
 						},
 				  }
