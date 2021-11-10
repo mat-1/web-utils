@@ -197,6 +197,7 @@
 		overflow-wrap: break-word;
 
 		position: absolute;
+		border: 3px solid var(--background-color-alt);
 	}
 
 	.editable-textarea-container-container {
@@ -210,7 +211,11 @@
 		height: 100%;
 		position: relative;
 		overflow-x: hidden;
-		border: 3px solid var(--background-color-alt);
 		border-radius: 0.5em;
+	}
+
+	.editable-textarea:focus {
+		outline: none;
+		border: 3px solid var(--background-color-alt-2);
 	}
 </style>

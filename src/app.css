@@ -61,3 +61,9 @@ input {
 	height: 2em;
 	padding: 0.5em;
 }
+
+textarea:focus,
+input:focus {
+	outline: none;
+	border: 1px solid var(--background-color-alt-3);
+}

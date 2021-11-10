@@ -55,6 +55,11 @@
 		font-size: inherit;
 	}
 
+	textarea:focus {
+		outline: none;
+		border: 3px solid var(--background-color-alt-2);
+	}
+
 	.textarea-container {
 		height: 100%;
 		overflow: hidden;
