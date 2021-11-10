@@ -9,16 +9,16 @@
 </script>
 
 <div class="input-container">
-{#if label && id}
-	<Label for={id}>{label}</Label>
-{/if}
-<input
-	bind:value
-	on:input
-	placeholder={placeholder ? placeholder : undefined}
-	{id}
-	aria-labelledby={id && label ? `${id}-label` : undefined}
-/>
+	{#if label && id}
+		<Label for={id}>{label}</Label>
+	{/if}
+	<input
+		bind:value
+		on:input
+		placeholder={placeholder ? placeholder : undefined}
+		{id}
+		aria-labelledby={id && label ? `${id}-label` : undefined}
+	/>
 </div>
 
 <style>
@@ -27,7 +27,6 @@
 		overflow: hidden;
 		display: flex;
 		flex-direction: column;
-		margin-bottom: .5em
+		margin-bottom: 0.5em;
 	}
 </style>
-	

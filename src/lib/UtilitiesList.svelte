@@ -65,7 +65,7 @@
 <div class="utilities-list-container">
 	<div class="search-container">
 		<input
-			type="text"
+			type="search"
 			placeholder="Search"
 			class="search"
 			bind:this={searchBarEl}
@@ -96,6 +96,8 @@
 		display: block;
 		width: 100%;
 		margin-bottom: 0.5rem;
+		/* Safari rounds borders on input[type=search] but i don't want it here */
+		-webkit-appearance: none;
 	}
 	@media (max-width: 440px) {
 		.search {
