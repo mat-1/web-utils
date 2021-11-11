@@ -89,7 +89,7 @@
 		list-style: none;
 		padding: 0;
 		margin-top: 0;
-		overflow: scroll;
+		overflow-y: scroll;
 		height: calc(100vh - 3rem);
 	}
 	.search {
@@ -109,6 +109,10 @@
 		ul {
 			margin-top: -0.7rem;
 			height: calc(100vh - 2.5rem);
+		}
+		:global(.hamburger-hidden) .search {
+			width: calc(100% - 1rem);
+			left: 0.5rem;
 		}
 	}
 	.search-container {

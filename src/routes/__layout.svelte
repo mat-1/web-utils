@@ -1,3 +1,15 @@
+<script lang="ts" context="module">
+	import { Load } from 'svelte'
+
+	export const load: Load = ({ page }) => {
+		return {
+			props: {
+				isIndex: page.path == base.replace(/^\/$/g, '') + '/',
+			},
+		}
+	}
+</script>
+
 <script lang="ts">
 	import { browser } from '$app/env'
 	import { page } from '$app/stores'
@@ -10,11 +22,10 @@
 
 	let sidebarHidden = false
 
+	export let isIndex = false
+
 	function updateSidebarForMobile() {
-		sidebarHidden =
-			window.matchMedia('(max-width: 440px)').matches &&
-			location.pathname !== base.replace(/^\/$/g, '') + '/'
-		console.log('updateSidebarForMobile', location.pathname, sidebarHidden)
+		sidebarHidden = window.matchMedia('(max-width: 440px)').matches && !isIndex
 	}
 
 	// hack so sveltekit runs this every time the page changes
@@ -26,14 +37,16 @@
 	onMount(updateSidebarForMobile)
 </script>
 
-<div id="page" class:sidebar-hidden={sidebarHidden}>
+<div id="page" class:sidebar-hidden={sidebarHidden} class:hamburger-hidden={isIndex}>
 	<nav>
 		<UtilitiesList />
 	</nav>
 
-	<button id="sidebar-toggle" on:click={() => (sidebarHidden = !sidebarHidden)}>
-		<HamburgerMenu />
-	</button>
+	{#if !isIndex}
+		<button id="sidebar-toggle" on:click={() => (sidebarHidden = !sidebarHidden)}>
+			<HamburgerMenu />
+		</button>
+	{/if}
 
 	<main>
 		<slot />

@@ -67,3 +67,17 @@ input:focus {
 	outline: none;
 	border: 1px solid var(--background-color-alt-3);
 }
+
+button {
+	border: 1px solid var(--background-color-alt-2);
+	background-color: var(--background-color-alt);
+	padding: 0.25em 0.5em;
+	border-radius: 0.25em;
+	color: var(--text-color);
+	cursor: pointer;
+	touch-action: manipulation;
+}
+
+button:hover {
+	border: 1px solid var(--background-color-alt-3);
+}
