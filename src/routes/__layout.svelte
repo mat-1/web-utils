@@ -4,6 +4,7 @@
 	export const load: Load = ({ page }) => {
 		return {
 			props: {
+				path: page.path,
 				isIndex: page.path == base.replace(/^\/$/g, '') + '/',
 			},
 		}
@@ -19,10 +20,12 @@
 	import UtilitiesList from '$lib/UtilitiesList.svelte'
 	import { onMount } from 'svelte'
 	import '../app.css'
+	import { storeValue } from '$lib/utils'
 
 	let sidebarHidden = false
 
 	export let isIndex = false
+	export let path: string
 
 	function updateSidebarForMobile() {
 		sidebarHidden = window.matchMedia('(max-width: 440px)').matches && !isIndex
@@ -32,7 +35,11 @@
 	$: $page,
 		(() => {
 			// we wait a frame so the sidebar hiding animation plays
-			if (browser) requestAnimationFrame(updateSidebarForMobile)
+			if (browser) {
+				requestAnimationFrame(updateSidebarForMobile)
+			if (!isIndex)
+				storeValue('current-page', path)
+			}
 		})()
 	onMount(updateSidebarForMobile)
 </script>
