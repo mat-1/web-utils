@@ -37,8 +37,7 @@
 			// we wait a frame so the sidebar hiding animation plays
 			if (browser) {
 				requestAnimationFrame(updateSidebarForMobile)
-			if (!isIndex)
-				storeValue('current-page', path)
+				if (!isIndex) storeValue('current-page', path)
 			}
 		})()
 	onMount(updateSidebarForMobile)

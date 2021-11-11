@@ -34,6 +34,10 @@
 			name: 'Lorem Ipsum',
 			href: '/lipsum',
 		},
+		{
+			name: 'UUID Inspector',
+			href: '/uuid',
+		},
 	]
 
 	$: shownListItems = utilities
