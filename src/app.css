@@ -81,3 +81,13 @@ button {
 button:hover {
 	border: 1px solid var(--background-color-alt-3);
 }
+
+select {
+	background-color: var(--background-color-alt);
+	border: 1px solid var(--background-color-alt-3);
+	border-radius: 0.25em;
+	font-size: 0.85em;
+	color: var(--text-color);
+	height: 2em;
+	/* padding: 0.5em; */
+}

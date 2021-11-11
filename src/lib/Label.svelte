@@ -24,4 +24,8 @@
 		margin-left: 0.5em;
 		width: max-content;
 	}
+
+	:global(.label + select) {
+		display: block;
+	}
 </style>

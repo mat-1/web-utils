@@ -38,6 +38,10 @@
 			name: 'UUID Inspector',
 			href: '/uuid',
 		},
+		{
+			name: 'String Length',
+			href: '/strlen',
+		},
 	]
 
 	$: shownListItems = utilities

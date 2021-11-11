@@ -14,6 +14,11 @@
 
 	let userUuid: string | undefined
 	let uuidData: UuidData | {} = {}
+	let snowflakeEpoch: string
+	$: {
+		snowflakeEpoch
+		if (userUuid) uuidData = extractData(userUuid)
+	}
 
 	$: if (userUuid) uuidData = extractData(userUuid)
 
@@ -31,18 +36,19 @@
 		return {
 			type: 'UUID v1',
 			mac: uuid.substring(20).toUpperCase().match(/../g).join(':'),
-			timestamp: new Date(timestamp / 10000)
+			timestamp: new Date(timestamp / 10000),
 		}
 	}
 
-	
 	function snowflake(uuid: BigInt): UuidData {
 		return {
 			type: 'Snowflake',
-			timestamp: new Date(Number(uuid >> 22n) + 1420070400000),
-			workerId: Number((uuid & 0x3E0000n) >> 17n),
-			processId: Number((uuid & 0x1F000n) >> 12n),
-			increment: Number(uuid & 0xFFFn)
+			timestamp: snowflakeEpoch
+				? new Date(Number((uuid >> 22n) + BigInt(snowflakeEpoch)))
+				: undefined,
+			workerId: Number((uuid & 0x3e0000n) >> 17n),
+			processId: Number((uuid & 0x1f000n) >> 12n),
+			increment: Number(uuid & 0xfffn),
 		}
 	}
 	function objectid(uuid: string): UuidData {
@@ -50,8 +56,8 @@
 		return {
 			type: 'ObjectID',
 			timestamp: new Date(Number(n >> 64n) * 1000),
-			processId: Number((n >> 24n) & 0xFFFFFFFFFFn),
-			increment: Number(n & 0xFFFFFFn),
+			processId: Number((n >> 24n) & 0xffffffffffn),
+			increment: Number(n & 0xffffffn),
 		}
 	}
 
@@ -76,44 +82,50 @@
 		} catch (e) {
 			// not a big int
 		}
-		console.log(uuidNumber)
-		if (uuidNumber >= (2 ** 21) && uuidNumber <= (2 ** 63)) {
+		if (uuidNumber >= 2 ** 21 && uuidNumber <= 2 ** 63) {
 			return snowflake(uuidNumber)
-			}
+		}
 		return {}
 	}
 
 	const uuidDatas = [
 		{
 			name: 'Type',
-			key: 'type'
+			key: 'type',
 		},
 		{
 			name: 'Timestamp',
-			key: 'timestamp'
+			key: 'timestamp',
 		},
 		{
 			name: 'Worker ID',
-			key: 'workerId'
+			key: 'workerId',
 		},
 		{
 			name: 'Process ID',
-			key: 'processId'
+			key: 'processId',
 		},
 		{
 			name: 'Increment',
-			key: 'increment'
+			key: 'increment',
 		},
 		{
 			name: 'MAC Address',
-			key: 'mac'
-		}
+			key: 'mac',
+		},
 	]
 </script>
 
 <div class="container">
 	<div class="uuid-container">
 		<Input id="uuid-input" label="UUID" bind:value={userUuid} />
+		{#if uuidData.type === 'Snowflake'}
+			<Label>Epoch</Label>
+			<select name="epoch" bind:value={snowflakeEpoch}>
+				<option value="1420070400000" selected={true}>Discord</option>
+				<option value="1288834974657">Twitter</option>
+			</select>
+		{/if}
 	</div>
 	<div class="data-container">
 		{#each uuidDatas as d}
