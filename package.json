@@ -35,6 +35,7 @@
 		"@lukeed/uuid": "^2.0.0",
 		"anchorme": "^2.1.2",
 		"cookie": "^0.4.1",
-		"fast-diff": "^1.2.0"
+		"fast-diff": "^1.2.0",
+		"hash-wasm": "^4.9.0"
 	}
 }

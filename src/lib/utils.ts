@@ -140,4 +140,8 @@ export const utilities = [
 		name: 'String Length',
 		href: '/strlen',
 	},
+	{
+		name: 'String Hash',
+		href: '/hash',
+	},
 ]
