@@ -42,4 +42,8 @@
 	.data-container {
 		margin: 0.5em;
 	}
+
+	p {
+		margin: 0
+	}
 </style>
