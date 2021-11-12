@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
+	import { utilities } from '$lib/utils'
 
 	import ListItem from '$lib/ListItem.svelte'
 
@@ -12,37 +13,6 @@
 	function matchesSearchQuery(query: string, value: string): boolean {
 		return normalize(value).includes(normalize(query))
 	}
-
-	const utilities = [
-		{
-			name: 'Base64 Encode/Decode',
-			href: '/base64',
-		},
-		{
-			name: 'Text Diff',
-			href: '/diff',
-		},
-		{
-			name: 'URL Encode/Decode',
-			href: '/url',
-		},
-		{
-			name: 'Number Base Converter',
-			href: '/basen',
-		},
-		{
-			name: 'Lorem Ipsum',
-			href: '/lipsum',
-		},
-		{
-			name: 'UUID Inspector',
-			href: '/uuid',
-		},
-		{
-			name: 'String Length',
-			href: '/strlen',
-		},
-	]
 
 	$: shownListItems = utilities
 		.filter((u) => {
