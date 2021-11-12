@@ -44,6 +44,6 @@
 	}
 
 	p {
-		margin: 0
+		margin: 0;
 	}
 </style>

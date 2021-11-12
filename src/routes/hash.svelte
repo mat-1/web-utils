@@ -15,7 +15,6 @@
 	let crc32 = ''
 	let mounted = false
 
-	
 	async function updateHashes(s) {
 		md5 = await hashWasm.md5(s)
 		sha1 = await hashWasm.sha1(s)
@@ -76,7 +75,7 @@
 		overflow-wrap: break-word;
 	}
 
-p {
-	margin: 0
-}
+	p {
+		margin: 0;
+	}
 </style>
