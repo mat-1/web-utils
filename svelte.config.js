@@ -22,6 +22,9 @@ const config = {
 		target: '#svelte',
 
 		vite: {
+			build: {
+				target: 'es2020',
+			},
 			server: process.env.REPL_ID
 				? {
 						hmr: {

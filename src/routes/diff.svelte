@@ -41,7 +41,7 @@
 	<div class="before-after-container">
 		<div class="before-container">
 			<div class="diff-options">
-				<button class="swap-button" on:click={swapBeforeAfter}>
+				<button class="swap-button" on:click={swapBeforeAfter} aria-label="Swap textboxes">
 					<Swap />
 				</button>
 			</div>

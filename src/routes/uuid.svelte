@@ -162,12 +162,6 @@
 	.data-container {
 		margin: 0.5em;
 	}
-	.error {
-		color: #e44;
-		font-weight: bold;
-		font-size: 1.1em;
-		margin-top: 1em;
-	}
 
 	p {
 		margin: 0 0.25em;

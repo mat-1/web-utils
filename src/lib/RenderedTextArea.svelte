@@ -174,6 +174,7 @@
 			on:keydown={handleKeyDown}
 			bind:this={editableTextareaEl}
 			aria-labelledby={label && id ? `${id}-label` : undefined}
+			role="textbox"
 		/>
 	</div>
 </div>

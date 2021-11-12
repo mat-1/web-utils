@@ -38,6 +38,7 @@
 		aria-labelledby={id && label ? `${id}-label` : undefined}
 		{disabled}
 		autocomplete="off"
+		role="textbox"
 	/>
 </div>
 

@@ -35,7 +35,7 @@
 	{#if label && id}
 		<Label for={id}>{label}</Label>
 	{/if}
-	<textarea bind:value on:input={onInput} {id} />
+	<textarea bind:value on:input={onInput} {id} role="textbox" />
 </div>
 
 <style>

@@ -58,7 +58,11 @@
 	</nav>
 
 	{#if !isIndex}
-		<button id="sidebar-toggle" on:click={() => (sidebarHidden = !sidebarHidden)}>
+		<button
+			id="sidebar-toggle"
+			on:click={() => (sidebarHidden = !sidebarHidden)}
+			aria-label="Toggle sidebar"
+		>
 			<HamburgerMenu />
 		</button>
 	{/if}
