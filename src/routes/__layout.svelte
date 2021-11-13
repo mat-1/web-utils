@@ -14,7 +14,6 @@
 		sidebarHidden =
 			window.matchMedia('(max-width: 440px)').matches &&
 			location.pathname !== base.replace(/^\/$/g, '') + '/'
-		console.log('updateSidebarForMobile', location.pathname, sidebarHidden)
 	}
 
 	// hack so sveltekit runs this every time the page changes

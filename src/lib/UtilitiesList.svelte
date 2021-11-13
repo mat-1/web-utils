@@ -89,7 +89,7 @@
 		list-style: none;
 		padding: 0;
 		margin-top: 0;
-		overflow: scroll;
+		overflow: auto;
 		height: calc(100vh - 3rem);
 	}
 	.search {
