@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
+	import { utilities } from '$lib/utils'
 
 	import ListItem from '$lib/ListItem.svelte'
 
@@ -12,29 +13,6 @@
 	function matchesSearchQuery(query: string, value: string): boolean {
 		return normalize(value).includes(normalize(query))
 	}
-
-	const utilities = [
-		{
-			name: 'Base64 Encode/Decode',
-			href: '/base64',
-		},
-		{
-			name: 'Text Diff',
-			href: '/diff',
-		},
-		{
-			name: 'URL Encode/Decode',
-			href: '/url',
-		},
-		{
-			name: 'Number Base Converter',
-			href: '/basen',
-		},
-		{
-			name: 'Lorem Ipsum',
-			href: '/lipsum',
-		},
-	]
 
 	$: shownListItems = utilities
 		.filter((u) => {
@@ -65,7 +43,7 @@
 <div class="utilities-list-container">
 	<div class="search-container">
 		<input
-			type="text"
+			type="search"
 			placeholder="Search"
 			class="search"
 			bind:this={searchBarEl}
@@ -89,13 +67,15 @@
 		list-style: none;
 		padding: 0;
 		margin-top: 0;
-		overflow: auto;
+		overflow-y: auto;
 		height: calc(100vh - 3rem);
 	}
 	.search {
 		display: block;
 		width: 100%;
 		margin-bottom: 0.5rem;
+		/* Safari rounds borders on input[type=search] but i don't want it here */
+		-webkit-appearance: none;
 	}
 	@media (max-width: 440px) {
 		.search {
@@ -107,6 +87,10 @@
 		ul {
 			margin-top: -0.7rem;
 			height: calc(100vh - 2.5rem);
+		}
+		:global(.hamburger-hidden) .search {
+			width: calc(100% - 1rem);
+			left: 0.5rem;
 		}
 	}
 	.search-container {

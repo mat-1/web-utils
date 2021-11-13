@@ -4,6 +4,7 @@
 	import { encodeHtml } from '$lib/utils'
 	import fastDiff from 'fast-diff'
 	import { onMount } from 'svelte'
+	import Swap from '$lib/icons/Swap.svelte'
 
 	let before: string
 	let after: string
@@ -27,12 +28,23 @@
 			}
 		}
 	}
+
+	function swapBeforeAfter() {
+		;[before, after] = [after, before]
+		renderDiff()
+	}
+
 	onMount(renderDiff)
 </script>
 
 <div class="container">
 	<div class="before-after-container">
 		<div class="before-container">
+			<div class="diff-options">
+				<button class="swap-button" on:click={swapBeforeAfter} aria-label="Swap textboxes">
+					<Swap />
+				</button>
+			</div>
 			<TextArea bind:value={before} id="diff-before" label="Before" on:input={renderDiff} />
 		</div>
 		<div class="after-container">
@@ -84,6 +96,7 @@
 	.after-container,
 	.diff-container {
 		margin: 0.5em;
+		position: relative;
 	}
 
 	.rendered-diff :global(.diff-added) {
@@ -101,6 +114,19 @@
 	}
 
 	p {
+		margin: 0;
+	}
+
+	.diff-options {
+		right: 0;
+		position: absolute;
+	}
+
+	.swap-button {
+		border: none;
+		background: none;
+		font-size: inherit;
+		padding: 0;
 		margin: 0;
 	}
 </style>

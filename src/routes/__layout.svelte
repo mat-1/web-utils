@@ -1,3 +1,18 @@
+<script lang="ts" context="module">
+	import { Load } from 'svelte'
+	import { utilities } from '$lib/utils'
+
+	export const load: Load = ({ page }) => {
+		return {
+			props: {
+				path: page.path,
+				isIndex: page.path == base.replace(/^\/$/g, '') + '/',
+				name: utilities.find((u) => u.href === page.path)?.name,
+			},
+		}
+	}
+</script>
+
 <script lang="ts">
 	import { browser } from '$app/env'
 	import { page } from '$app/stores'
@@ -5,34 +20,52 @@
 
 	import HamburgerMenu from '$lib/icons/HamburgerMenu.svelte'
 	import UtilitiesList from '$lib/UtilitiesList.svelte'
+	import { storeValue } from '$lib/utils'
 	import { onMount } from 'svelte'
 	import '../app.css'
 
 	let sidebarHidden = false
 
+	export let isIndex = false
+	export let path: string
+	export let name: string
+
 	function updateSidebarForMobile() {
-		sidebarHidden =
-			window.matchMedia('(max-width: 440px)').matches &&
-			location.pathname !== base.replace(/^\/$/g, '') + '/'
+		sidebarHidden = window.matchMedia('(max-width: 440px)').matches && !isIndex
 	}
 
 	// hack so sveltekit runs this every time the page changes
 	$: $page,
 		(() => {
 			// we wait a frame so the sidebar hiding animation plays
-			if (browser) requestAnimationFrame(updateSidebarForMobile)
+			if (browser) {
+				requestAnimationFrame(updateSidebarForMobile)
+				if (!isIndex) storeValue('current-page', path)
+			}
 		})()
 	onMount(updateSidebarForMobile)
 </script>
 
-<div id="page" class:sidebar-hidden={sidebarHidden}>
+<svelte:head>
+	<title>
+		{name ? `${name} - Web Utils` : 'Web Utils'}
+	</title>
+</svelte:head>
+
+<div id="page" class:sidebar-hidden={sidebarHidden} class:hamburger-hidden={isIndex}>
 	<nav>
 		<UtilitiesList />
 	</nav>
 
-	<button id="sidebar-toggle" on:click={() => (sidebarHidden = !sidebarHidden)}>
-		<HamburgerMenu />
-	</button>
+	{#if !isIndex}
+		<button
+			id="sidebar-toggle"
+			on:click={() => (sidebarHidden = !sidebarHidden)}
+			aria-label="Toggle sidebar"
+		>
+			<HamburgerMenu />
+		</button>
+	{/if}
 
 	<main>
 		<slot />

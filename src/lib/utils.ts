@@ -110,3 +110,42 @@ export function decodeHtml(str: string): string {
 	p.remove()
 	return decoded
 }
+
+export const utilities = [
+	{
+		name: 'Base64 Encode/Decode',
+		href: '/base64',
+	},
+	{
+		name: 'Text Diff',
+		href: '/diff',
+	},
+	{
+		name: 'URL Encode/Decode',
+		href: '/url',
+	},
+	{
+		name: 'Number Base Converter',
+		href: '/basen',
+	},
+	{
+		name: 'Lorem Ipsum',
+		href: '/lipsum',
+	},
+	{
+		name: 'UUID Inspector',
+		href: '/uuid',
+	},
+	{
+		name: 'String Length',
+		href: '/strlen',
+	},
+	{
+		name: 'String Hash',
+		href: '/hash',
+	},
+	{
+		name: 'Formatter',
+		href: '/fmt',
+	},
+]
