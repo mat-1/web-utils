@@ -1,5 +1,5 @@
 <script lang="ts">
-	let _for: string
+	let _for: string | undefined = undefined
 	export { _for as for }
 
 	export let id: string | undefined = undefined
@@ -8,7 +8,7 @@
 </script>
 
 {#if simulateLabel}
-	<span class="label" {id} on:click={() => document.getElementById(_for).focus()}>
+	<span class="label" {id} on:click={() => _for && document.getElementById(_for)?.focus()}>
 		<slot />
 	</span>
 {:else}

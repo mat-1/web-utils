@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { encodeHtml } from '$lib/utils.ts'
 	import { onMount } from 'svelte'
 
 	const WORDS = [
@@ -79,13 +78,13 @@
 		const length = Math.floor(Math.random() * (max - min)) + min
 		return Array.from(Array(length), (_) => lipsumSentence() + '.').join(' ')
 	}
-	function lipsumArticle(min: number = 4, max: number = 4) {
+	function lipsumArticle(min = 4, max = 4) {
 		const length = Math.floor(Math.random() * (max - min)) + min
 		return Array.from(Array(length), (_) => lipsumParagraph()).join('\n\n')
 	}
 
-	let title: string = ''
-	let text: string = ''
+	let title = ''
+	let text = ''
 
 	function generate() {
 		title = lipsumSentence(2, 6)

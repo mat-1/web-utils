@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-	import { Load } from 'svelte'
+	import type { Load } from '@sveltejs/kit'
 	import { utilities } from '$lib/utils'
 
 	export const load: Load = ({ page }) => {

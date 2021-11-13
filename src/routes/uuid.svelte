@@ -1,10 +1,9 @@
 <script lang="ts">
 	import Input from '$lib/Input.svelte'
 	import Label from '$lib/Label.svelte'
-	import { b64decode, b64encode } from '$lib/utils'
 
 	interface UuidData {
-		type: string
+		type: typeof uuidDatas[number]['key']
 		timestamp?: Date
 		workerId?: number
 		processId?: number
@@ -13,7 +12,7 @@
 	}
 
 	let userUuid: string | undefined
-	let uuidData: UuidData | {} = {}
+	let uuidData: Partial<UuidData> = {}
 	let snowflakeEpoch: string
 	$: {
 		snowflakeEpoch
@@ -35,12 +34,12 @@
 
 		return {
 			type: 'UUID v1',
-			mac: uuid.substring(20).toUpperCase().match(/../g).join(':'),
+			mac: uuid.substring(20).toUpperCase().match(/../g)?.join(':'),
 			timestamp: new Date(timestamp / 10000),
 		}
 	}
 
-	function snowflake(uuid: BigInt): UuidData {
+	function snowflake(uuid: bigint): UuidData {
 		return {
 			type: 'Snowflake',
 			timestamp: snowflakeEpoch
@@ -61,7 +60,7 @@
 		}
 	}
 
-	function extractData(uuid: string): UuidData {
+	function extractData(uuid: string): Partial<UuidData> {
 		uuid = uuid.replace(/-/g, '')
 		// standard uuid
 		if (uuid.match(/^[0-9a-f]{32}$/i))
@@ -76,19 +75,19 @@
 			return objectid(uuid)
 		}
 
-		let uuidNumber: BigInt | null
+		let uuidNumber: bigint | undefined
 		try {
 			uuidNumber = BigInt(uuid)
 		} catch (e) {
 			// not a big int
 		}
-		if (uuidNumber >= 2 ** 21 && uuidNumber <= 2 ** 63) {
+		if (uuidNumber && uuidNumber >= 2 ** 21 && uuidNumber <= 2 ** 63) {
 			return snowflake(uuidNumber)
 		}
 		return {}
 	}
 
-	const uuidDatas = [
+	const uuidDatas: { name: string; key: string }[] = [
 		{
 			name: 'Type',
 			key: 'type',
@@ -114,12 +113,19 @@
 			key: 'mac',
 		},
 	]
+
+	$: shownDatas = uuidDatas
+		.filter(({ key }) => key in uuidData)
+		.map(({ name, key }) => ({
+			name,
+			value: (uuidData as any)[key],
+		}))
 </script>
 
 <div class="container">
 	<div class="uuid-container">
 		<Input id="uuid-input" label="UUID" bind:value={userUuid} />
-		{#if uuidData.type === 'Snowflake'}
+		{#if 'type' in uuidData && uuidData.type === 'Snowflake'}
 			<Label>Epoch</Label>
 			<select name="epoch" bind:value={snowflakeEpoch}>
 				<option value="1420070400000" selected={true}>Discord</option>
@@ -128,11 +134,9 @@
 		{/if}
 	</div>
 	<div class="data-container">
-		{#each uuidDatas as d}
-			{#if uuidData[d.key] !== undefined}
-				<Label>{d.name}</Label>
-				<p>{uuidData[d.key]}</p>
-			{/if}
+		{#each shownDatas as { name, value }}
+			<Label>{name}</Label>
+			<p>{value}</p>
 		{/each}
 	</div>
 </div>
