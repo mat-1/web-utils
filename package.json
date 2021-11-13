@@ -32,6 +32,9 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@codemirror/commands": "^0.19.5",
+		"@codemirror/state": "^0.19.5",
+		"@codemirror/view": "^0.19.16",
 		"@lukeed/uuid": "^2.0.0",
 		"anchorme": "^2.1.2",
 		"cookie": "^0.4.1",

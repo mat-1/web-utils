@@ -144,4 +144,8 @@ export const utilities = [
 		name: 'String Hash',
 		href: '/hash',
 	},
+	{
+		name: 'Formatter',
+		href: '/fmt',
+	},
 ]
