@@ -5,12 +5,14 @@
 		drawSelection,
 		highlightActiveLine,
 		EditorView,
+		ViewUpdate,
+		ViewPlugin,
 	} from '@codemirror/view'
 	import { closeBrackets, closeBracketsKeymap } from '@codemirror/closebrackets'
 	import { searchKeymap, highlightSelectionMatches } from '@codemirror/search'
 	import { autocompletion, completionKeymap } from '@codemirror/autocomplete'
 	import { rectangularSelection } from '@codemirror/rectangular-selection'
-	import { EditorState, Compartment, Extension } from '@codemirror/state'
+	import { EditorState, Compartment, Extension, Transaction } from '@codemirror/state'
 	import { highlightActiveLineGutter } from '@codemirror/gutter'
 	import { defaultHighlightStyle } from '@codemirror/highlight'
 	import { history, historyKeymap } from '@codemirror/history'
@@ -29,6 +31,10 @@
 
 	export let value: string = ''
 	export let language: undefined | Extension
+	export let monospace = false
+
+	// whether the editor has user focus
+	let focused = false
 
 	let container: HTMLDivElement
 
@@ -61,14 +67,20 @@
 		EditorView.theme(
 			{
 				'.cm-content': {
-					fontFamily: 'var(--monospace-font)',
+					fontFamily: monospace ? 'var(--monospace-font)' : 'var(--text-font)',
 				},
-				'.cm-activeLine': { background: 'var(--background-color-alt)' },
+				//'.cm-activeLine': { background: 'var(--background-color-alt)' },
+				'.cm-activeLine': { background: '#0000' },
 				'.cm-cursor': { borderColor: 'var(--text-color)' },
 				'&': { height: '100%', background: 'var(--background-color)' },
 			},
 			{ dark: true }
 		),
+		ViewPlugin.define(() => ({
+			update: (u) => {
+				if (u.focusChanged) focused = view.hasFocus
+			},
+		})),
 	]
 	if (language) {
 		const languageCompartment = new Compartment()
@@ -88,17 +100,21 @@
 		view = new EditorView({
 			state: startState,
 			parent: container,
+			// change value and dispatch input every time the doc changes
 			dispatch: (tr) => {
 				view.update([tr])
 				const docText = view.state.doc.toString()
 				if (docText !== actualValue) {
-					if (value !== docText) value = docText
+					value = docText
 					actualValue = value
 					dispatch('input', { value })
 				}
 			},
 		})
 	})
+
+	// change the container border color when the code editor is selected
+	// view.plugin()
 
 	$: {
 		if (view) {
@@ -110,7 +126,7 @@
 	}
 </script>
 
-<div bind:this={container} class="code-textarea" />
+<div bind:this={container} class="code-textarea" class:focused />
 
 <style>
 	.code-textarea {
@@ -129,7 +145,7 @@
 		font-size: inherit;
 	}
 
-	.code-textarea:focus {
+	.focused.code-textarea {
 		outline: none;
 		border: 3px solid var(--background-color-alt-2);
 	}

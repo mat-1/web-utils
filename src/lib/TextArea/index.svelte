@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { createEventDispatcher, onMount } from 'svelte'
 	import { browser } from '$app/env'
-	import { getValue, storeValue } from './utils'
-	import Label from './Label.svelte'
+	import { getValue, storeValue } from '$lib/utils'
+	import Label from '$lib/Label.svelte'
 
 	export let id: string | undefined
 	export let value = ''

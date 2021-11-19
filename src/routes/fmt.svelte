@@ -1,5 +1,5 @@
 <script lang="ts">
-	import CodeTextArea from '$lib/CodeTextArea.svelte'
+	import CodeTextArea from '$lib/TextArea/Code.svelte'
 
 	let unformatted: string
 	let formatted: string

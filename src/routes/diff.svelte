@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Label from '$lib/Label.svelte'
-	import TextArea from '$lib/TextArea.svelte'
+	import TextArea from '$lib/TextArea/index.svelte'
 	import { encodeHtml } from '$lib/utils'
 	import fastDiff from 'fast-diff'
 	import { onMount } from 'svelte'

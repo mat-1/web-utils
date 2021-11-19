@@ -10,6 +10,7 @@
 
 	--anchor-color: #3da1ff;
 
+	--default-font: sans-serif;
 	--monospace-font: 'Consolas', 'Monaco', monospace;
 }
 
@@ -33,7 +34,7 @@ html {
 }
 
 body {
-	font-family: sans-serif;
+	font-family: var(--default-font);
 	margin: 0;
 	background-color: var(--background-color);
 	color: var(--text-color);
@@ -92,4 +93,10 @@ select {
 	color: var(--text-color);
 	height: 2em;
 	/* padding: 0.5em; */
+}
+
+/* remove the shadows safari adds to textareas */
+textarea {
+	box-shadow: none;
+	-webkit-appearance: none;
 }
