@@ -10,6 +10,8 @@
 
 	--anchor-color: #3da1ff;
 
+	--caret-color: #4693ff;
+
 	--default-font: sans-serif;
 	--monospace-font: 'Consolas', 'Monaco', monospace;
 }
@@ -39,6 +41,7 @@ body {
 	background-color: var(--background-color);
 	color: var(--text-color);
 	height: 100%;
+	caret-color: var(--caret-color);
 }
 
 a {

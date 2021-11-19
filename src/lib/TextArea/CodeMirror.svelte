@@ -5,33 +5,36 @@
 		drawSelection,
 		highlightActiveLine,
 		EditorView,
-		ViewUpdate,
 		ViewPlugin,
 	} from '@codemirror/view'
 	import { closeBrackets, closeBracketsKeymap } from '@codemirror/closebrackets'
 	import { searchKeymap, highlightSelectionMatches } from '@codemirror/search'
 	import { autocompletion, completionKeymap } from '@codemirror/autocomplete'
 	import { rectangularSelection } from '@codemirror/rectangular-selection'
-	import { EditorState, Compartment, Extension, Transaction } from '@codemirror/state'
-	import { highlightActiveLineGutter } from '@codemirror/gutter'
+	import { EditorState, Compartment, Extension } from '@codemirror/state'
+	import { defaultKeymap, indentWithTab } from '@codemirror/commands'
 	import { defaultHighlightStyle } from '@codemirror/highlight'
 	import { history, historyKeymap } from '@codemirror/history'
 	import { bracketMatching } from '@codemirror/matchbrackets'
 	import { createEventDispatcher, onMount } from 'svelte'
-	import { defaultKeymap } from '@codemirror/commands'
 	import { indentOnInput } from '@codemirror/language'
 	import { commentKeymap } from '@codemirror/comment'
 	import { python } from '@codemirror/lang-python'
 	import { foldKeymap } from '@codemirror/fold'
 	import { lintKeymap } from '@codemirror/lint'
+	import Label from '$lib/Label.svelte'
+	import { getValue, storeValue } from '$lib/utils'
+	import { browser } from '$app/env'
 
 	const dispatch = createEventDispatcher()
 
 	let tabSize = new Compartment()
 
 	export let value: string = ''
-	export let language: undefined | Extension
+	export let language: Extension | undefined
 	export let monospace = false
+	export let id: string | undefined = undefined
+	export let label: string | undefined = undefined
 
 	// whether the editor has user focus
 	let focused = false
@@ -39,10 +42,8 @@
 	let container: HTMLDivElement
 
 	const extensions: Extension[] = [
-		highlightActiveLineGutter(),
 		highlightSpecialChars(),
 		history(),
-		// foldGutter(),
 		drawSelection(),
 		EditorState.allowMultipleSelections.of(true),
 		indentOnInput(),
@@ -62,16 +63,18 @@
 			...commentKeymap,
 			...completionKeymap,
 			...lintKeymap,
+			indentWithTab,
 		]),
-		tabSize.of(EditorState.tabSize.of(8)),
+		tabSize.of(EditorState.tabSize.of(2)),
 		EditorView.theme(
 			{
 				'.cm-content': {
 					fontFamily: monospace ? 'var(--monospace-font)' : 'var(--text-font)',
+					caretColor: 'var(--caret-color)',
 				},
 				//'.cm-activeLine': { background: 'var(--background-color-alt)' },
 				'.cm-activeLine': { background: '#0000' },
-				'.cm-cursor': { borderColor: 'var(--text-color)' },
+				'.cm-cursor': { borderColor: 'var(--caret-color)' },
 				'&': { height: '100%', background: 'var(--background-color)' },
 			},
 			{ dark: true }
@@ -113,9 +116,6 @@
 		})
 	})
 
-	// change the container border color when the code editor is selected
-	// view.plugin()
-
 	$: {
 		if (view) {
 			if (view.state.doc.toString() !== value)
@@ -124,9 +124,22 @@
 				})
 		}
 	}
+
+	// we store whether the component has been mounted because then if we store the value too early it'll override the previous stored value
+	let mounted = false
+	onMount(() => {
+		mounted = true
+		value = id ? getValue(id) : ''
+	})
+	$: {
+		if (id && browser && mounted) storeValue(id, value)
+	}
 </script>
 
-<div bind:this={container} class="code-textarea" class:focused />
+{#if label && id}
+	<Label for={id}>{label}</Label>
+{/if}
+<div bind:this={container} {id} class="code-textarea" class:focused />
 
 <style>
 	.code-textarea {

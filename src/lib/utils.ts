@@ -96,7 +96,11 @@ export function storeValue(id: string, value: string): void {
  */
 export function getValue(id: string): string {
 	const value = localStorage.getItem(id)
-	return value ? b64decode(value) : ''
+	try {
+		return value ? b64decode(value) : ''
+	} catch {
+		return ''
+	}
 }
 
 export function encodeHtml(str: string): string {

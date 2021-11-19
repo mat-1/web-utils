@@ -15,15 +15,23 @@
 	}
 
 	function formatData(data: string, format: DataFormat) {
-		switch (format) {
-			case DataFormat.Json:
-				return JSON.stringify(JSON.parse(data), null, '\t')
+		try {
+			switch (format) {
+				case DataFormat.Json:
+					return JSON.stringify(JSON.parse(data), null, '\t')
+			}
+		} catch {
+			return ''
 		}
 	}
 	function unformatData(data: string, format: DataFormat) {
-		switch (format) {
-			case DataFormat.Json:
-				return JSON.stringify(JSON.parse(data))
+		try {
+			switch (format) {
+				case DataFormat.Json:
+					return JSON.stringify(JSON.parse(data))
+			}
+		} catch {
+			return ''
 		}
 	}
 
@@ -40,22 +48,20 @@
 
 <div class="container">
 	<div class="unformatted-container">
-		<CodeTextArea bind:value={unformatted} on:input={updateFormatted} />
-		<!--<ClickableUrlsTextArea
+		<CodeTextArea
 			bind:value={unformatted}
-			id="unformatted-data"
 			on:input={updateFormatted}
+			id="unformatted-data"
 			label="Unformatted"
-		/>-->
+		/>
 	</div>
 	<div class="formatted-container">
-		<CodeTextArea bind:value={formatted} on:input={updateUnformatted} />
-		<!--<ClickableUrlsTextArea
+		<CodeTextArea
 			bind:value={formatted}
-			id="formatted-data"
 			on:input={updateUnformatted}
+			id="formatted-data"
 			label="Formatted"
-		/>-->
+		/>
 	</div>
 </div>
 
