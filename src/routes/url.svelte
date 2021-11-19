@@ -1,6 +1,6 @@
 <script lang="ts">
 	import ClickableUrlsTextArea from '$lib/ClickableUrlsTextArea.svelte'
-	import TextArea from '$lib/TextArea.svelte'
+	import TextArea from '$lib/TextArea/index.svelte'
 
 	let decoded: string
 	let encoded: string
