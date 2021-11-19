@@ -23,6 +23,18 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
+"@codemirror/autocomplete@^0.19.0":
+  version "0.19.8"
+  resolved "https://registry.yarnpkg.com/@codemirror/autocomplete/-/autocomplete-0.19.8.tgz#a4a886089f0248a0d1ccdc11d9f8560c0b2c2abd"
+  integrity sha512-o4I1pRlFjhBHOYab+QfpKcW0B8FqAH+2pdmCYrkTz3bm1djVwhlMEhv1s/aTKhdjLtkfZFUbdHBi+8xe22wUCA==
+  dependencies:
+    "@codemirror/language" "^0.19.0"
+    "@codemirror/state" "^0.19.4"
+    "@codemirror/text" "^0.19.2"
+    "@codemirror/tooltip" "^0.19.0"
+    "@codemirror/view" "^0.19.0"
+    "@lezer/common" "^0.15.0"
+
 "@codemirror/autocomplete@^0.19.6":
   version "0.19.6"
   resolved "https://registry.yarnpkg.com/@codemirror/autocomplete/-/autocomplete-0.19.6.tgz#8c2ecd6eace3a1196985dbc68a46bb399f70d9df"
@@ -87,7 +99,7 @@
     "@codemirror/state" "^0.19.0"
     "@codemirror/view" "^0.19.0"
 
-"@codemirror/highlight@^0.19.0":
+"@codemirror/highlight@^0.19.0", "@codemirror/highlight@^0.19.6":
   version "0.19.6"
   resolved "https://registry.yarnpkg.com/@codemirror/highlight/-/highlight-0.19.6.tgz#7f2e066f83f5649e8e0748a3abe0aaeaf64b8ac2"
   integrity sha512-+eibu6on9quY8uN3xJ/n3rH+YIDLlpX7YulVmFvqAIz/ukRQ5tWaBmB7fMixHmnmRIRBRZgB8rNtonuMwZSAHQ==
@@ -106,6 +118,19 @@
   dependencies:
     "@codemirror/state" "^0.19.0"
     "@codemirror/view" "^0.19.0"
+
+"@codemirror/lang-javascript@^0.19.3":
+  version "0.19.3"
+  resolved "https://registry.yarnpkg.com/@codemirror/lang-javascript/-/lang-javascript-0.19.3.tgz#281b3447d8b65d98311ebf25893ef5c30a11418b"
+  integrity sha512-2NE5z98Nz9Rv4OS5UtgehCSnyQjac+P85+evzy1D/4wllp/EPaHIEEtSP1daBvrLy49SdI/9vES3ZJu6rSv4/w==
+  dependencies:
+    "@codemirror/autocomplete" "^0.19.0"
+    "@codemirror/highlight" "^0.19.6"
+    "@codemirror/language" "^0.19.0"
+    "@codemirror/lint" "^0.19.0"
+    "@codemirror/state" "^0.19.0"
+    "@codemirror/view" "^0.19.0"
+    "@lezer/javascript" "^0.15.1"
 
 "@codemirror/lang-python@^0.19.2":
   version "0.19.2"
@@ -127,7 +152,7 @@
     "@lezer/common" "^0.15.5"
     "@lezer/lr" "^0.15.0"
 
-"@codemirror/lint@^0.19.3":
+"@codemirror/lint@^0.19.0", "@codemirror/lint@^0.19.3":
   version "0.19.3"
   resolved "https://registry.yarnpkg.com/@codemirror/lint/-/lint-0.19.3.tgz#84101d0967fea8df114a8f0f79965c22ccd3b3cc"
   integrity sha512-+c39s05ybD2NjghxkPFsUbH/qBL0cdzKmtHbzUm0RVspeL2OiP7uHYJ6J5+Qr9RjMIPWzcqSauRqxfmCrctUfg==
@@ -250,6 +275,13 @@
   version "0.15.8"
   resolved "https://registry.yarnpkg.com/@lezer/common/-/common-0.15.8.tgz#e9d87b5f05c18feb51b7f04d74b124caea32a94b"
   integrity sha512-zpS/xty48huX4uBidupmWDYCRBYpVtoTiFhzYhd6GsQwU67WsdSImdWzZJDrF/DhcQ462wyrZahHlo2grFB5ig==
+
+"@lezer/javascript@^0.15.1":
+  version "0.15.1"
+  resolved "https://registry.yarnpkg.com/@lezer/javascript/-/javascript-0.15.1.tgz#12794febbea8b9113edae46acae1994ff801805d"
+  integrity sha512-EnfO9MF2yDMpN2DEovPbKKdi4tj1phuolBxcEDC35cx+OUfToweMOEBZHr/nhHI79+6HkLMoCK2coch+PT+oBA==
+  dependencies:
+    "@lezer/lr" "^0.15.0"
 
 "@lezer/lr@^0.15.0":
   version "0.15.4"

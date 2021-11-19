@@ -9,6 +9,8 @@
 	--text-color-dark: #556;
 
 	--anchor-color: #3da1ff;
+
+	--monospace-font: 'Consolas', 'Monaco', monospace;
 }
 
 @media (prefers-color-scheme: light) {

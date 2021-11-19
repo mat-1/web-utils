@@ -40,7 +40,7 @@
 
 <div class="container">
 	<div class="unformatted-container">
-		<CodeTextArea />
+		<CodeTextArea bind:value={unformatted} on:input={updateFormatted} />
 		<!--<ClickableUrlsTextArea
 			bind:value={unformatted}
 			id="unformatted-data"
@@ -49,6 +49,7 @@
 		/>-->
 	</div>
 	<div class="formatted-container">
+		<CodeTextArea bind:value={formatted} on:input={updateUnformatted} />
 		<!--<ClickableUrlsTextArea
 			bind:value={formatted}
 			id="formatted-data"
