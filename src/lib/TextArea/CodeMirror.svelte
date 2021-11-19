@@ -31,7 +31,7 @@
 	let tabSize = new Compartment()
 
 	export let value: string = ''
-	export let language: Extension | undefined
+	export let language: Extension | null
 	export let monospace = false
 	export let id: string | undefined = undefined
 	export let label: string | undefined = undefined
@@ -85,9 +85,12 @@
 			},
 		})),
 	]
+	const languageCompartment = new Compartment()
 	if (language) {
-		const languageCompartment = new Compartment()
-		extensions.push(languageCompartment.of(python()))
+		extensions.push(languageCompartment.of(language))
+	}
+	$: {
+		if (language) languageCompartment.reconfigure(language)
 	}
 
 	let startState = EditorState.create({

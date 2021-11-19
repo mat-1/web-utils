@@ -1,10 +1,10 @@
 <script lang="ts">
+	import { guessLanguage } from './language-guess'
 	import CodeMirror from './CodeMirror.svelte'
-	import { javascript } from './languages'
 
-	export let value: string
+	export let value: string = ''
 	export let label: string | undefined = undefined
 	export let id: string | undefined = undefined
 </script>
 
-<CodeMirror language={javascript()} bind:value on:input {label} {id} />
+<CodeMirror language={guessLanguage(value)} bind:value on:input {label} {id} />

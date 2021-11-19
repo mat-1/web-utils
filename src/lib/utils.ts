@@ -112,7 +112,7 @@ export function decodeHtml(str: string): string {
 	p.innerHTML = str
 	const decoded = p.textContent
 	p.remove()
-	return decoded
+	return decoded ?? ''
 }
 
 export const utilities = [
