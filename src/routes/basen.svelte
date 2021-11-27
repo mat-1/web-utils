@@ -9,7 +9,7 @@
 	let base12: string
 	let base16: string
 
-	let baseNRadix = '3'
+	let baseNRadix = ''
 	let baseN: string
 
 	let highestBase = 36
@@ -41,7 +41,7 @@
 		base10 = fromBase10(number, 10)
 		base12 = fromBase10(number, 12)
 		base16 = fromBase10(number, 16)
-		baseN = fromBase10(number, parseInt(baseNRadix))
+		if (baseNRadix !== '') baseN = fromBase10(number, parseInt(baseNRadix))
 	}
 
 	const updateBase2 = () => {
