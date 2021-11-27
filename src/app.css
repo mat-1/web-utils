@@ -10,7 +10,7 @@
 
 	--anchor-color: #3da1ff;
 
-	--caret-color: #4693ff;
+	--caret-color: #fff;
 
 	--default-font: sans-serif;
 	--monospace-font: 'Consolas', 'Monaco', monospace;
@@ -102,4 +102,10 @@ select {
 textarea {
 	box-shadow: none;
 	-webkit-appearance: none;
+}
+
+hr {
+	color: var(--background-color-alt-3);
+	margin: 1em auto;
+	width: calc(100% - 0.5em);
 }
