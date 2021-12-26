@@ -2,7 +2,6 @@
 	import Label from '$lib/Label.svelte'
 	import { onMount } from 'svelte'
 	import { getValue, storeValue } from './utils'
-	import { browser } from '$app/env'
 
 	export let value = ''
 	export let placeholder = ''

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Input from '$lib/Input.svelte'
+	import { onMount } from 'svelte'
 
 	// this number is a string so it can be infinitely large
 	let number = '0'
@@ -75,7 +76,9 @@
 		number = toBase10(baseN, parseInt(baseNRadix))
 		updateBases()
 	}
+
 	updateBases()
+	onMount(() => (number = base10))
 
 	// https://www.seximal.net/names-of-other-bases
 	function getBaseName(base: number): string | null {
@@ -161,7 +164,7 @@
 		on:input={updateBase10}
 	/>
 	<Input
-		id="base10"
+		id="base12"
 		label="Base 12 ({getBaseName(12)})"
 		bind:value={base12}
 		on:input={updateBase12}
