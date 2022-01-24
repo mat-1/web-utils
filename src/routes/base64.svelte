@@ -21,21 +21,18 @@
 
 		const newDecoded = encodeLinesSeparately ? encoded.split('\n').map(b64decode).join('\n') : b64decode(encoded)
 		if (newDecoded !== decoded) decoded = newDecoded
-
 	}
 
-	function onEncodeSeparatelyChanged() {
-		if (browser) {
-			if (decoded)
-				updateEncoded()
-		}
+	function updateEncodeLinesSeparately(e: Event) {
+		encodeLinesSeparately = (e.target as HTMLInputElement).checked
+		updateEncoded()
 	}
 </script>
 
 <div class="container">
 	<div class="decoded-container">
 		<div class="options">
-			<Toggle bind:value={encodeLinesSeparately} on:input={onEncodeSeparatelyChanged} id="base64-lines-separately">Encode lines separately</Toggle>
+			<Toggle bind:value={encodeLinesSeparately} on:input={updateEncodeLinesSeparately} id="base64-lines-separately">Encode lines separately</Toggle>
 		</div>
 		<ClickableUrlsTextArea
 			bind:value={decoded}
