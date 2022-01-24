@@ -18,7 +18,7 @@
 	let highestBase = alphabet.length
 	
 	// https://stackoverflow.com/a/32480941
-		function convertBase(value: string, fromBase: number, toBase: number): string {
+	function convertBase(value: string, fromBase: number, toBase: number): string {
 		// we convert these at the beginning so we don't have to later
 		const fromBaseBigint = BigInt(fromBase)
 		const toBaseBigint = BigInt(toBase)
@@ -46,23 +46,24 @@
 	}
 
 	function fromBase10(n: string, radix: number): string {
+		// if it's unary, repeat 0 n times
+		if (radix === 1) {
+			let parsedInt = parseInt(n)
+			// we limit it at 300 to not lag the browser and because it looks big enough
+			return parsedInt < 300 ? '0'.repeat(parsedInt) : '0'.repeat(300)
+		}
 		return convertBase(n, 10, radix)
-		// let parsedInt = parseInt(n)
-
-		// // if it's unary, repeat 0 n times
-		// if (radix === 1)
-		// 	// we limit it at 300 to not lag the browser and because it looks big enough
-		// 	return parsedInt < 300 ? '0'.repeat(parsedInt) : '0'.repeat(300)
 
 		// if (isNaN(parsedInt)) parsedInt = 0
 		// return parsedInt.toString(radix)
 	}
 	function toBase10(n: string, radix: number): string {
-		return convertBase(n, radix, 10)
 		// let parsedInt = parseInt(n, radix)
 
 		// // if it's unary, return the length
-		// if (radix === 1) return parsedInt.toString().length.toString()
+		if (radix === 1) return n.length.toString()
+
+		return convertBase(n, radix, 10)
 
 		// if (isNaN(parsedInt)) parsedInt = 0
 		// return parsedInt.toString()
