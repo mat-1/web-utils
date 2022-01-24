@@ -1,22 +1,42 @@
 <script lang="ts">
 	import ClickableUrlsTextArea from '$lib/ClickableUrlsTextArea.svelte'
-
 	import { b64decode, b64encode } from '$lib/utils'
+	import Toggle from '$lib/Toggle.svelte'
+	import { browser } from '$app/env'
 
 	let decoded: string
 	let encoded: string
 
+	let encodeLinesSeparately = false
+
 	function updateEncoded() {
-		if (b64encode(decoded) !== encoded) encoded = b64encode(decoded)
+		const newEncoded = encodeLinesSeparately ? decoded.split('\n').map(b64encode).join('\n') : b64encode(decoded)
+		if (newEncoded !== encoded) encoded = newEncoded
 	}
 
 	function updateDecoded() {
-		if (b64decode(encoded) !== decoded) decoded = b64decode(encoded)
+		// if encoded has a newline, we must turn on decode lines separately
+		if (encoded.trim().includes('\n'))
+			encodeLinesSeparately = true
+
+		const newDecoded = encodeLinesSeparately ? encoded.split('\n').map(b64decode).join('\n') : b64decode(encoded)
+		if (newDecoded !== decoded) decoded = newDecoded
+
+	}
+
+	function onEncodeSeparatelyChanged() {
+		if (browser) {
+			if (decoded)
+				updateEncoded()
+		}
 	}
 </script>
 
 <div class="container">
 	<div class="decoded-container">
+		<div class="options">
+			<Toggle bind:value={encodeLinesSeparately} on:input={onEncodeSeparatelyChanged} id="base64-lines-separately">Encode lines separately</Toggle>
+		</div>
 		<ClickableUrlsTextArea
 			bind:value={decoded}
 			id="base64-decoded"
@@ -55,8 +75,17 @@
 		}
 	}
 
+	.decoded-container {
+		position: relative;
+	}
+
 	.decoded-container,
 	.encoded-container {
 		margin: 0.5em;
+	}
+
+	.options {
+		right: 0;
+		position: absolute;
 	}
 </style>
