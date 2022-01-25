@@ -1,3 +1,6 @@
+import { writable } from 'svelte/store'
+import type { Writable } from 'svelte/store'
+
 // https://developer.mozilla.org/en-US/docs/Web/API/btoa#unicode_strings
 
 // convert a Unicode string to a string in which
@@ -84,22 +87,36 @@ export function b64decode(str: string): string {
 	return output
 }
 
+const stores: Record<string, Writable<string>> = {}
+const storeValues: Record<string, string> = {}
+
 /**
  * Store something in localStorage
  */
 export function storeValue(id: string, value: string): void {
-	localStorage.setItem(id, b64encode(value))
+	if (!(id in stores)) {
+		const store = writable(value)
+		stores[id] = store
+		storeValues[id] = value
+		store.subscribe((v) => {
+			localStorage.setItem(id, b64encode(v))
+			storeValues[id] = v
+		})
+	} else stores[id].set(value)
 }
 
 /**
  * Get something that was previously stored in localStorage. Will return an empty string if the value is not found.
  */
 export function getValue(id: string): string {
-	const value = localStorage.getItem(id)
-	try {
-		return value ? b64decode(value) : ''
-	} catch {
+	if (!(id in stores)) {
 		return ''
+	} else {
+		try {
+			return storeValues[id] ? storeValues[id] : b64decode(localStorage.getItem(id) || '')
+		} catch {
+			return ''
+		}
 	}
 }
 

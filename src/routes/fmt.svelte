@@ -1,5 +1,6 @@
 <script lang="ts">
 	import CodeTextArea from '$lib/TextArea/Code.svelte'
+	import { onMount } from 'svelte'
 
 	let unformatted: string
 	let formatted: string
@@ -44,6 +45,14 @@
 		formatType = identifyFormat(formatted)
 		unformatted = unformatData(formatted, formatType)
 	}
+
+	onMount(() => {
+		if (unformatted && !formatted) {
+			updateFormatted()
+		} else if (formatted && !unformatted) {
+			updateUnformatted()
+		}
+	})
 </script>
 
 <div class="container">

@@ -3,6 +3,7 @@
 	import { utilities } from '$lib/utils'
 
 	import ListItem from '$lib/ListItem.svelte'
+	import { identifyAndGoto } from './identify'
 
 	let searchQuery = ''
 
@@ -31,6 +32,14 @@
 		}
 	}
 
+	async function onSearchPaste(event: ClipboardEvent) {
+		let paste: string = (event.clipboardData || (window as any).clipboardData).getData('text')
+
+		if (identifyAndGoto(paste.trim())) {
+			event.preventDefault()
+		}
+	}
+
 	function onWindowKeydown(event: KeyboardEvent) {
 		if (event.ctrlKey && event.key === '/') {
 			searchBarEl.focus()
@@ -49,6 +58,7 @@
 			bind:this={searchBarEl}
 			bind:value={searchQuery}
 			on:keydown={onSearchKeydown}
+			on:paste={onSearchPaste}
 		/>
 	</div>
 	<ul>

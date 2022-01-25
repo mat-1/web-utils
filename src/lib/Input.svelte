@@ -16,11 +16,13 @@
 	onMount(() => {
 		if (id) value = getValue(id)
 		mounted = true
+		console.log('value', value)
 	})
 
 	$: {
 		if (id && mounted) {
 			storeValue(id, value)
+			console.log('store value', id, value)
 		}
 	}
 </script>
