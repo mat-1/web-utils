@@ -149,7 +149,7 @@ export const utilities = [
 		href: '/hash',
 	},
 	{
-		name: 'Formatter',
+		name: 'JSON Formatter',
 		href: '/fmt',
 	},
 ]
