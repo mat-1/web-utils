@@ -14,6 +14,8 @@
 	<div class="data-container">
 		<Label>Characters</Label>
 		<p>{string.length}</p>
+		<Label>Words</Label>
+		<p>{string.trim().split(/\s+/).filter(w => w).length}</p>
 	</div>
 </div>
 

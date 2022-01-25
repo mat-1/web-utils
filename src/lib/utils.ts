@@ -152,4 +152,8 @@ export const utilities = [
 		name: 'Formatter',
 		href: '/fmt',
 	},
+	{
+		name: 'HTML Encode/Decode',
+		href: '/htmlentities'
+	}
 ]

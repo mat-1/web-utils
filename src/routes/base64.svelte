@@ -2,7 +2,6 @@
 	import ClickableUrlsTextArea from '$lib/ClickableUrlsTextArea.svelte'
 	import { b64decode, b64encode } from '$lib/utils'
 	import Toggle from '$lib/Toggle.svelte'
-	import { browser } from '$app/env'
 
 	let decoded: string
 	let encoded: string
@@ -72,13 +71,10 @@
 		}
 	}
 
-	.decoded-container {
-		position: relative;
-	}
-
 	.decoded-container,
 	.encoded-container {
 		margin: 0.5em;
+		position: relative;
 	}
 
 	.options {
