@@ -1,21 +1,41 @@
 <script lang="ts">
 	import ClickableUrlsTextArea from '$lib/ClickableUrlsTextArea.svelte'
 	import TextArea from '$lib/TextArea/index.svelte'
+import Toggle from '$lib/Toggle.svelte';
 
 	let decoded: string
 	let encoded: string
 
+	let encodeAll = false
+
 	function updateEncoded() {
-		if (encodeURIComponent(decoded) !== encoded) encoded = encodeURIComponent(decoded)
+		let result = ''
+		if (encodeAll) {
+			for (const char of decoded) {
+				result += '%' + char.charCodeAt(0).toString(16)
+			}
+		} else {
+			result = encodeURIComponent(decoded)
+		}
+		if (result !== encoded) encoded = result
 	}
 
 	function updateDecoded() {
 		if (decodeURIComponent(encoded) !== decoded) decoded = decodeURIComponent(encoded)
 	}
+
+    function updateEncodeAll(e: Event) {
+		encodeAll = (e.target as HTMLInputElement).checked
+		updateEncoded()
+    }
 </script>
 
 <div class="container">
 	<div class="decoded-container">
+		<div class="options">
+			<Toggle bind:value={encodeAll} on:input={updateEncodeAll} id="html-encode-all">Encode everything</Toggle>
+		</div>
+
 		<ClickableUrlsTextArea
 			bind:value={decoded}
 			id="url-decoded"
@@ -52,5 +72,11 @@
 	.decoded-container,
 	.encoded-container {
 		margin: 0.5em;
+		position: relative;
+	}
+
+	.options {
+		right: 0;
+		position: absolute;
 	}
 </style>
