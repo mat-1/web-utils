@@ -2,6 +2,7 @@
 	import ClickableUrlsTextArea from '$lib/ClickableUrlsTextArea.svelte'
 	import TextArea from '$lib/TextArea/index.svelte'
 import Toggle from '$lib/Toggle.svelte';
+import { onMount } from 'svelte';
 
 	let decoded: string
 	let encoded: string
@@ -28,12 +29,20 @@ import Toggle from '$lib/Toggle.svelte';
 		encodeAll = (e.target as HTMLInputElement).checked
 		updateEncoded()
     }
+
+	onMount(() => {
+		if (decoded && !encoded) {
+			updateEncoded()
+		} else if (encoded && !decoded) {
+			updateDecoded()
+		}
+	})
 </script>
 
 <div class="container">
 	<div class="decoded-container">
 		<div class="options">
-			<Toggle bind:value={encodeAll} on:input={updateEncodeAll} id="html-encode-all">Encode everything</Toggle>
+			<Toggle bind:value={encodeAll} on:input={updateEncodeAll} id="url-encode-all">Encode everything</Toggle>
 		</div>
 
 		<ClickableUrlsTextArea

@@ -24,11 +24,26 @@ export function identifyAndGoto(str: string): boolean {
 
 	// json
 	// we test with a regex first since we only care about object jsons and not strings or numbers
-	console.log(str)
 	if (/^{[\w\W]+}$/.test(str) && JSON.parse(str)) {
 		storeValue('unformatted-data', str)
 		storeValue('formatted-data', '')
 		goto('/fmt')
+		return true
+	}
+
+	// url decode
+	if (/%[0-9a-f]{2}/.test(str)) {
+		storeValue('url-encoded', str)
+		storeValue('url-decoded', '')
+		goto('/url')
+		return true
+	}
+
+	// html decode
+	if (/&\d{2};/.test(str)) {
+		storeValue('html-encoded', str)
+		storeValue('html-decoded', '')
+		goto('/htmlentities')
 		return true
 	}
 
