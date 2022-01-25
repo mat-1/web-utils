@@ -15,7 +15,7 @@
 	let crc32 = ''
 	let mounted = false
 
-	async function updateHashes(s) {
+	async function updateHashes(s: string) {
 		md5 = await hashWasm.md5(s)
 		sha1 = await hashWasm.sha1(s)
 		sha256 = await hashWasm.sha256(s)

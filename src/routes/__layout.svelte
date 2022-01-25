@@ -2,12 +2,12 @@
 	import type { Load } from '@sveltejs/kit'
 	import { utilities } from '$lib/utils'
 
-	export const load: Load = ({ page }) => {
+	export const load: Load = ({ url }) => {
 		return {
 			props: {
-				path: page.path,
-				isIndex: page.path == base.replace(/^\/$/g, '') + '/',
-				name: utilities.find((u) => u.href === page.path)?.name,
+				path: url.pathname,
+				isIndex: url.pathname == base.replace(/^\/$/g, '') + '/',
+				name: utilities.find((u) => u.href === url.pathname)?.name,
 			},
 		}
 	}

@@ -51,6 +51,7 @@
 		"anchorme": "^2.1.2",
 		"cookie": "^0.4.1",
 		"fast-diff": "^1.2.0",
-		"hash-wasm": "^4.9.0"
+		"hash-wasm": "^4.9.0",
+		"micro-strptime": "^0.2.3"
 	}
 }

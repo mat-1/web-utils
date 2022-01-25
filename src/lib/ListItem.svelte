@@ -4,7 +4,7 @@
 	export let href: string | undefined
 	export let isThisPage = false
 	page.subscribe((p) => {
-		isThisPage = href === p.path
+		isThisPage = href === p.url.pathname
 	})
 </script>
 
