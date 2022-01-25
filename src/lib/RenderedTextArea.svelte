@@ -20,7 +20,7 @@
 		return el.innerText.replace(/\n$/, '')
 	}
 
-	let editableTextareaEl: HTMLDivElement
+	export let element: HTMLDivElement | undefined = undefined
 
 	function setHtml(el: HTMLTextAreaElement, text: string) {
 		el.innerHTML = text
@@ -104,12 +104,9 @@
 	}
 
 	$: {
-		if (
-			editableTextareaEl &&
-			value !== getText(editableTextareaEl as unknown as HTMLTextAreaElement)
-		) {
+		if (element && value !== getText(element as unknown as HTMLTextAreaElement)) {
 			const rendered = render(value)
-			setHtml(editableTextareaEl as unknown as HTMLTextAreaElement, rendered)
+			setHtml(element as unknown as HTMLTextAreaElement, rendered)
 		}
 	}
 
@@ -172,7 +169,7 @@
 			on:input={handleInput}
 			on:beforeinput={handleBeforeInput}
 			on:keydown={handleKeyDown}
-			bind:this={editableTextareaEl}
+			bind:this={element}
 			aria-labelledby={label && id ? `${id}-label` : undefined}
 			role="textbox"
 		/>

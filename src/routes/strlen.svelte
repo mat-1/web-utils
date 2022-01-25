@@ -15,7 +15,11 @@
 		<Label>Characters</Label>
 		<p>{string.length}</p>
 		<Label>Words</Label>
+<<<<<<< HEAD
 		<p>{string.trim().split(/\s+/).filter(w => w).length}</p>
+=======
+		<p>{string.split(/\s+/).filter((w) => w).length}</p>
+>>>>>>> 7db558c48eb40de699cbf9333bd56d89b268597b
 	</div>
 </div>
 
