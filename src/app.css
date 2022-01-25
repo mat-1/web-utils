@@ -105,6 +105,8 @@ textarea {
 }
 
 hr {
+	/* border is required for safari support */
+	border: 1px solid var(--background-color-alt-3);
 	color: var(--background-color-alt-3);
 	margin: 1em auto;
 	width: calc(100% - 0.5em);
