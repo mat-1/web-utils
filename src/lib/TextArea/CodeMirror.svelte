@@ -30,7 +30,7 @@
 
 	let tabSize = new Compartment()
 
-	export let value: string = ''
+	export let value = ''
 	export let language: Extension | null
 	export let monospace = false
 	export let id: string | undefined = undefined

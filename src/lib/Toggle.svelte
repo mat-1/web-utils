@@ -5,7 +5,7 @@
 	import { onMount } from 'svelte'
 	import { getValue, storeValue } from './utils'
 
-	export let value: boolean = false
+	export let value = false
 	export let id: string | undefined
 
 	let mounted = false

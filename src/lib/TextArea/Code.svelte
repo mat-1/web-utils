@@ -2,7 +2,7 @@
 	import { guessLanguage } from './language-guess'
 	import CodeMirror from './CodeMirror.svelte'
 
-	export let value: string = ''
+	export let value = ''
 	export let label: string | undefined = undefined
 	export let id: string | undefined = undefined
 </script>

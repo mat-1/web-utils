@@ -1,17 +1,16 @@
 <!-- convert between time formats and timezones -->
-
 <script lang="ts">
 	import ClickableUrlsTextArea from '$lib/ClickableUrlsTextArea.svelte'
 	import Label from '$lib/Label.svelte'
 	import { onMount } from 'svelte'
 	import { browser } from '$app/env'
 	import * as hashWasm from 'hash-wasm'
-	import { strptime } from '../lib/datetime'
+	import { strptime } from '../lib/strptime'
 
 	let string = ''
 
 	let format = '%d/%B/%Y:%H:%M:%S %Z'
-    let time: string
+	let time: string
 
 	let mounted = false
 
