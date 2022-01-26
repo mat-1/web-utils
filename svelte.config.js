@@ -34,7 +34,7 @@ const config = {
 								port: 443,
 							},
 					  }
-					: undefined,
+					: {},
 		},
 	},
 }
