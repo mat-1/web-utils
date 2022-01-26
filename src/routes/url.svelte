@@ -1,8 +1,8 @@
 <script lang="ts">
+	import { afterNavigate } from '$app/navigation';
 	import ClickableUrlsTextArea from '$lib/ClickableUrlsTextArea.svelte'
 	import TextArea from '$lib/TextArea/index.svelte'
-import Toggle from '$lib/Toggle.svelte';
-import { onMount } from 'svelte';
+	import Toggle from '$lib/Toggle.svelte'
 
 	let decoded: string
 	let encoded: string
@@ -30,7 +30,7 @@ import { onMount } from 'svelte';
 		updateEncoded()
     }
 
-	onMount(() => {
+	afterNavigate(({ from, to }) => {
 		if (decoded && !encoded) {
 			updateEncoded()
 		} else if (encoded && !decoded) {

@@ -2,7 +2,7 @@
 	import ClickableUrlsTextArea from '$lib/ClickableUrlsTextArea.svelte'
 	import { b64decode, b64encode } from '$lib/utils'
 	import Toggle from '$lib/Toggle.svelte'
-	import { onMount } from 'svelte'
+	import { afterNavigate } from '$app/navigation'
 
 	let decoded: string
 	let encoded: string
@@ -34,7 +34,7 @@
 		updateEncoded()
 	}
 
-	onMount(() => {
+	afterNavigate(({ from, to }) => {
 		if (encoded && !decoded) {
 			updateDecoded()
 			decodedTextArea?.focus()

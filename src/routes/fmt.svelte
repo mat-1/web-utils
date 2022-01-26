@@ -1,6 +1,6 @@
 <script lang="ts">
+	import { afterNavigate } from '$app/navigation'
 	import CodeTextArea from '$lib/TextArea/Code.svelte'
-	import { onMount } from 'svelte'
 
 	let unformatted: string
 	let formatted: string
@@ -46,7 +46,7 @@
 		unformatted = unformatData(formatted, formatType)
 	}
 
-	onMount(() => {
+	afterNavigate(({ from, to }) => {
 		if (unformatted && !formatted) {
 			updateFormatted()
 		} else if (formatted && !unformatted) {

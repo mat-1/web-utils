@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte'
+	import { afterNavigate } from '$app/navigation'
 
 	const WORDS = [
 		'ad',
@@ -93,7 +93,7 @@
 			.join(' ')
 		text = lipsumArticle(4, 4)
 	}
-	onMount(generate)
+	afterNavigate(generate)
 </script>
 
 <div>

@@ -3,6 +3,7 @@
 	import type { UuidData } from '$lib/uuid'
 	import Input from '$lib/Input.svelte'
 	import Label from '$lib/Label.svelte'
+import { browser } from '$app/env';
 
 	let userUuid: string | undefined
 	let uuidData: Partial<UuidData> = {}
@@ -14,7 +15,7 @@
 		if (userUuid) uuidData = extractData(userUuid, snowflakeEpochBigint)
 	}
 
-	$: if (userUuid) uuidData = extractData(userUuid, snowflakeEpochBigint)
+	$: if (userUuid !== undefined) uuidData = extractData(userUuid, snowflakeEpochBigint)
 
 	$: shownDatas = uuidDatas
 		.filter(({ key }) => key in uuidData)
