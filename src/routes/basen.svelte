@@ -18,32 +18,6 @@
 	let highestBase = alphabet.length
 	
 	// https://stackoverflow.com/a/32480941
-	function convertBase(value: string, fromBase: number, toBase: number): string {
-		// we convert these at the beginning so we don't have to later
-		const fromBaseBigint = BigInt(fromBase)
-		const toBaseBigint = BigInt(toBase)
-
-		const fromAlphabet = alphabet.slice(0, fromBase)
-		const toAlphabet = alphabet.slice(0, toBase)
-			
-		let decValue: bigint = value
-			.split('')
-			.reverse()
-			.reduce((carry: bigint, digit: string, index: number) => {
-				if (fromAlphabet.indexOf(digit) === -1)
-					throw new Error(`Invalid digit '${digit}' for base ${fromBase}.`)
-				const digitIndex = BigInt(fromAlphabet.indexOf(digit))
-				return carry += digitIndex * (fromBaseBigint ** BigInt(index))
-				},
-			0n)
-		
-		let newValue = ''
-		while (decValue > 0) {
-			newValue = toAlphabet[Number(decValue % toBaseBigint)] + newValue
-			decValue = (decValue - (decValue % toBaseBigint)) / toBaseBigint
-		}
-		return newValue || '0'
-	}
 
 	function fromBase10(n: string, radix: number): string {
 		// if it's unary, repeat 0 n times
@@ -52,10 +26,18 @@
 			// we limit it at 300 to not lag the browser and because it looks big enough
 			return parsedInt < 300 ? '0'.repeat(parsedInt) : '0'.repeat(300)
 		}
-		return convertBase(n, 10, radix)
 
-		// if (isNaN(parsedInt)) parsedInt = 0
-		// return parsedInt.toString(radix)
+		let decValue = BigInt(n)
+
+		const toBaseBigint = BigInt(radix)
+		const toAlphabet = alphabet.slice(0, radix)
+
+		let newValue = ''
+		while (decValue > 0) {
+			newValue = toAlphabet[Number(decValue % toBaseBigint)] + newValue
+			decValue = (decValue - (decValue % toBaseBigint)) / toBaseBigint
+		}
+		return newValue || '0'
 	}
 	function toBase10(n: string, radix: number): string {
 		// let parsedInt = parseInt(n, radix)
@@ -63,7 +45,20 @@
 		// // if it's unary, return the length
 		if (radix === 1) return n.length.toString()
 
-		return convertBase(n, radix, 10)
+		const fromBaseBigint = BigInt(radix)
+
+		const fromAlphabet = alphabet.slice(0, radix)
+
+		let decValue: bigint = n
+			.split('')
+			.reverse()
+			.reduce((carry: bigint, digit: string, index: number) => {
+				if (fromAlphabet.indexOf(digit) === -1)
+					throw new Error(`Invalid digit '${digit}' for base ${radix}.`)
+				const digitIndex = BigInt(fromAlphabet.indexOf(digit))
+				return carry += digitIndex * (fromBaseBigint ** BigInt(index))
+			}, 0n)
+		return decValue.toString()
 
 		// if (isNaN(parsedInt)) parsedInt = 0
 		// return parsedInt.toString()
