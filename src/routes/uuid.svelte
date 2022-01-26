@@ -3,7 +3,8 @@
 	import type { UuidData } from '$lib/uuid'
 	import Input from '$lib/Input.svelte'
 	import Label from '$lib/Label.svelte'
-import { browser } from '$app/env';
+	import Double from '$lib/containers/Double.svelte'
+	import Part from '$lib/containers/Part.svelte'
 
 	let userUuid: string | undefined
 	let uuidData: Partial<UuidData> = {}
@@ -25,8 +26,8 @@ import { browser } from '$app/env';
 		}))
 </script>
 
-<div class="container">
-	<div class="uuid-container">
+<Double>
+	<Part>
 		<Input id="uuid-input" label="UUID" bind:value={userUuid} />
 		{#if 'type' in uuidData && uuidData.type === 'Snowflake'}
 			<Label>Epoch</Label>
@@ -35,8 +36,8 @@ import { browser } from '$app/env';
 				<option value="1288834974657">Twitter</option>
 			</select>
 		{/if}
-	</div>
-	<div class="data-container">
+	</Part>
+	<Part>
 		{#each shownDatas as { name, value }}
 			<Label>{name}</Label>
 			{#if name == 'Timestamp'}
@@ -45,36 +46,5 @@ import { browser } from '$app/env';
 				<p>{value}</p>
 			{/if}
 		{/each}
-	</div>
-</div>
-
-<style>
-	/* stack the containers on top of each other */
-	.container {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		grid-template-rows: 1fr;
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		height: 100%;
-	}
-
-	@media (max-width: 440px) {
-		.container {
-			grid-template-columns: 1fr;
-			grid-template-rows: 1fr 1fr;
-		}
-	}
-
-	.uuid-container,
-	.data-container {
-		margin: 0.5em;
-	}
-
-	p {
-		margin: 0 0.25em;
-	}
-</style>
+	</Part>
+</Double>

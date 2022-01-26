@@ -1,8 +1,11 @@
 <script lang="ts">
 	import ClickableUrlsTextArea from '$lib/ClickableUrlsTextArea.svelte'
+	import Double from '$lib/containers/Double.svelte'
 	import { b64decode, b64encode } from '$lib/utils'
-	import Toggle from '$lib/Toggle.svelte'
 	import { afterNavigate } from '$app/navigation'
+	import Part from '$lib/containers/Part.svelte'
+	import Toggle from '$lib/Toggle.svelte'
+	import Options from '$lib/containers/Options.svelte'
 
 	let decoded: string
 	let encoded: string
@@ -45,15 +48,15 @@
 	})
 </script>
 
-<div class="container">
-	<div class="decoded-container">
-		<div class="options">
+<Double>
+	<Part>
+		<Options>
 			<Toggle
 				bind:value={encodeLinesSeparately}
 				on:input={updateEncodeLinesSeparately}
 				id="base64-lines-separately">Encode lines separately</Toggle
 			>
-		</div>
+		</Options>
 		<ClickableUrlsTextArea
 			bind:value={decoded}
 			bind:element={decodedTextArea}
@@ -61,8 +64,8 @@
 			on:input={updateEncoded}
 			label="Plaintext"
 		/>
-	</div>
-	<div class="encoded-container">
+	</Part>
+	<Part>
 		<ClickableUrlsTextArea
 			bind:value={encoded}
 			bind:element={encodedTextArea}
@@ -70,38 +73,5 @@
 			on:input={updateDecoded}
 			label="Base64"
 		/>
-	</div>
-</div>
-
-<style>
-	/* stack the containers on top of each other */
-	.container {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		grid-template-rows: 1fr;
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		height: 100%;
-	}
-
-	@media (max-width: 440px) {
-		.container {
-			grid-template-columns: 1fr;
-			grid-template-rows: 1fr 1fr;
-		}
-	}
-
-	.decoded-container,
-	.encoded-container {
-		margin: 0.5em;
-		position: relative;
-	}
-
-	.options {
-		right: 0;
-		position: absolute;
-	}
-</style>
+	</Part>
+</Double>

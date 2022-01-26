@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { afterNavigate } from '$app/navigation'
+	import Double from '$lib/containers/Double.svelte'
+	import Part from '$lib/containers/Part.svelte'
 	import CodeTextArea from '$lib/TextArea/Code.svelte'
 
 	let unformatted: string
@@ -55,48 +57,21 @@
 	})
 </script>
 
-<div class="container">
-	<div class="unformatted-container">
+<Double>
+	<Part>
 		<CodeTextArea
 			bind:value={unformatted}
 			on:input={updateFormatted}
 			id="unformatted-data"
 			label="Unformatted"
 		/>
-	</div>
-	<div class="formatted-container">
+	</Part>
+	<Part>
 		<CodeTextArea
 			bind:value={formatted}
 			on:input={updateUnformatted}
 			id="formatted-data"
 			label="Formatted"
 		/>
-	</div>
-</div>
-
-<style>
-	/* stack the containers on top of each other */
-	.container {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		grid-template-rows: 1fr;
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		height: 100%;
-	}
-
-	@media (max-width: 440px) {
-		.container {
-			grid-template-columns: 1fr;
-			grid-template-rows: 1fr 1fr;
-		}
-	}
-
-	.unformatted-container,
-	.formatted-container {
-		margin: 0.5em;
-	}
-</style>
+	</Part>
+</Double>

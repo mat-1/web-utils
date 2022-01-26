@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { afterNavigate } from '$app/navigation'
+	import Single from '$lib/containers/Single.svelte'
 
 	const WORDS = [
 		'ad',
@@ -96,7 +97,7 @@
 	afterNavigate(generate)
 </script>
 
-<div>
+<Single>
 	<button on:click={generate}>Generate</button>
 	<article>
 		<h2>{title}</h2>
@@ -104,4 +105,4 @@
 			<p>{p}</p>
 		{/each}
 	</article>
-</div>
+</Single>

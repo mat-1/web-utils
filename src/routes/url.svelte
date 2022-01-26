@@ -1,6 +1,9 @@
 <script lang="ts">
-	import { afterNavigate } from '$app/navigation';
+	import { afterNavigate } from '$app/navigation'
 	import ClickableUrlsTextArea from '$lib/ClickableUrlsTextArea.svelte'
+	import Double from '$lib/containers/Double.svelte'
+	import Options from '$lib/containers/Options.svelte'
+	import Part from '$lib/containers/Part.svelte'
 	import TextArea from '$lib/TextArea/index.svelte'
 	import Toggle from '$lib/Toggle.svelte'
 
@@ -25,10 +28,10 @@
 		if (decodeURIComponent(encoded) !== decoded) decoded = decodeURIComponent(encoded)
 	}
 
-    function updateEncodeAll(e: Event) {
+	function updateEncodeAll(e: Event) {
 		encodeAll = (e.target as HTMLInputElement).checked
 		updateEncoded()
-    }
+	}
 
 	afterNavigate(({ from, to }) => {
 		if (decoded && !encoded) {
@@ -39,11 +42,13 @@
 	})
 </script>
 
-<div class="container">
-	<div class="decoded-container">
-		<div class="options">
-			<Toggle bind:value={encodeAll} on:input={updateEncodeAll} id="url-encode-all">Encode everything</Toggle>
-		</div>
+<Double>
+	<Part>
+		<Options>
+			<Toggle bind:value={encodeAll} on:input={updateEncodeAll} id="url-encode-all">
+				Encode everything
+			</Toggle>
+		</Options>
 
 		<ClickableUrlsTextArea
 			bind:value={decoded}
@@ -51,41 +56,8 @@
 			on:input={updateEncoded}
 			label="Plaintext"
 		/>
-	</div>
-	<div class="encoded-container">
+	</Part>
+	<Part>
 		<TextArea bind:value={encoded} id="url-encoded" on:input={updateDecoded} label="URL encoded" />
-	</div>
-</div>
-
-<style>
-	/* stack the containers on top of each other */
-	.container {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		grid-template-rows: 1fr;
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		height: 100%;
-	}
-
-	@media (max-width: 440px) {
-		.container {
-			grid-template-columns: 1fr;
-			grid-template-rows: 1fr 1fr;
-		}
-	}
-
-	.decoded-container,
-	.encoded-container {
-		margin: 0.5em;
-		position: relative;
-	}
-
-	.options {
-		right: 0;
-		position: absolute;
-	}
-</style>
+	</Part>
+</Double>

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Single from '$lib/containers/Single.svelte'
 	import Input from '$lib/Input.svelte'
 	import { onMount } from 'svelte'
 
@@ -13,10 +14,9 @@
 	let baseNRadix = ''
 	let baseN: string
 
-	
 	const alphabet = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+/'.split('')
 	let highestBase = alphabet.length
-	
+
 	// https://stackoverflow.com/a/32480941
 
 	function fromBase10(n: string, radix: number): string {
@@ -56,7 +56,7 @@
 				if (fromAlphabet.indexOf(digit) === -1)
 					throw new Error(`Invalid digit '${digit}' for base ${radix}.`)
 				const digitIndex = BigInt(fromAlphabet.indexOf(digit))
-				return carry += digitIndex * (fromBaseBigint ** BigInt(index))
+				return (carry += digitIndex * fromBaseBigint ** BigInt(index))
 			}, 0n)
 		return decValue.toString()
 
@@ -182,7 +182,7 @@
 	}
 </script>
 
-<div class="container">
+<Single>
 	<Input id="base2" label="Base 2 ({getBaseName(2)})" bind:value={base2} on:input={updateBase2} />
 	<Input id="base8" label="Base 8 ({getBaseName(8)})" bind:value={base8} on:input={updateBase8} />
 	<Input
@@ -218,16 +218,4 @@
 			on:input={updateBaseN}
 		/>
 	{/if}
-</div>
-
-<style>
-	.container {
-		height: 100%;
-		position: absolute;
-		top: 0;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		margin: 0.5em;
-	}
-</style>
+</Single>

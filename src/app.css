@@ -111,3 +111,7 @@ hr {
 	margin: 1em auto;
 	width: calc(100% - 0.5em);
 }
+
+p {
+	margin: 0;
+}
