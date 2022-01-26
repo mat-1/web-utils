@@ -1,5 +1,6 @@
 import { writable } from 'svelte/store'
 import type { Writable } from 'svelte/store'
+import { goto } from '$app/navigation'
 
 // https://developer.mozilla.org/en-US/docs/Web/API/btoa#unicode_strings
 
@@ -110,7 +111,7 @@ export function storeValue(id: string, value: string): void {
  */
 export function getValue(id: string): string {
 	if (!(id in stores)) {
-		return ''
+		return b64decode(localStorage.getItem(id) || '')
 	} else {
 		try {
 			return storeValues[id] ? storeValues[id] : b64decode(localStorage.getItem(id) || '')
@@ -130,6 +131,11 @@ export function decodeHtml(str: string): string {
 	const decoded = p.textContent
 	p.remove()
 	return decoded ?? ''
+}
+
+export function gotoDatetime(date: Date) {
+	storeValue('datetime-input', date.toString())
+	goto('/datetime')
 }
 
 export const utilities = [
@@ -172,5 +178,9 @@ export const utilities = [
 	{
 		name: 'HTML Encode/Decode',
 		href: '/htmlentities'
+	},
+	{
+		name: 'Datetime',
+		href: '/datetime'
 	}
 ]

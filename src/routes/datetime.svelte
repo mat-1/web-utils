@@ -1,33 +1,36 @@
 <!-- convert between time formats and timezones -->
 <script lang="ts">
-	import ClickableUrlsTextArea from '$lib/ClickableUrlsTextArea.svelte'
 	import Label from '$lib/Label.svelte'
-	import { onMount } from 'svelte'
+	import Input from '$lib/Input.svelte'
 	import { browser } from '$app/env'
-	import * as hashWasm from 'hash-wasm'
-	import { strptime } from '../lib/strptime'
+	import { afterNavigate } from '$app/navigation'
 
-	let string = ''
+	let inputDate = ''
+	let date: Date
 
-	let format = '%d/%B/%Y:%H:%M:%S %Z'
-	let time: string
+	// parse it as an int (so it's treated as ms since epoch) if it has more than 5 digits
+	$: date = new Date(/^\d{5,}$/.test(inputDate) ? parseInt(inputDate) : inputDate)
 
-	let mounted = false
-
-	async function updateTime(s: string) {
-		time
-	}
-
-	// $: if (browser) updateHashes(string)
+	afterNavigate(({ from, to }) => {
+		if (to.searchParams.has('date'))
+			inputDate = to.searchParams.get('date') ?? ''
+	})
 </script>
 
 <div class="container">
 	<div class="string-container">
-		<ClickableUrlsTextArea bind:value={string} id="hash-string" label="String" />
+		<Input id="date-input" label="Date" bind:value={inputDate} />
+		<button on:click={() => { inputDate = new Date().toString() }}>Now</button>
 	</div>
 	<div class="data-container">
-		<!-- <Label>MD5</Label>
-		<p>{md5}</p> -->
+		{#if !isNaN(date.getTime())}
+			<Label>Milliseconds since epoch</Label>
+			<p>{date.getTime()}</p>
+			<Label>ISO 8601</Label>
+			<p>{date.toISOString()}</p>
+			<Label>UTC string</Label>
+			<p>{date.toUTCString()}</p>
+		{/if}
 	</div>
 </div>
 

@@ -38,7 +38,11 @@
 	<div class="data-container">
 		{#each shownDatas as { name, value }}
 			<Label>{name}</Label>
-			<p>{value}</p>
+			{#if name == 'Timestamp'}
+				<p><a href="/datetime?date={value}">{value}</a></p>
+			{:else}
+				<p>{value}</p>
+			{/if}
 		{/each}
 	</div>
 </div>
