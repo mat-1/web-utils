@@ -24,6 +24,11 @@ const config = {
 		vite: {
 			build: {
 				target: 'es2020',
+				rollupOptions: {
+					output: {
+						manualChunks: undefined,
+					},
+				},
 			},
 			// if the user is on replit or gitpod, use a secure websocket
 			server:

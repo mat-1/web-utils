@@ -9,7 +9,7 @@
 </script>
 
 {#if href}
-	<a {href} on:click><li class:selected={isThisPage}><slot /></li></a>
+	<li class:selected={isThisPage} class="anchor-list-item"><a {href} on:click><slot /></a></li>
 {:else}
 	<li class:selected={isThisPage} on:click tabindex="0"><slot /></li>
 {/if}
@@ -23,12 +23,17 @@
 		margin: 0.25em;
 		opacity: 0.9;
 	}
+	.anchor-list-item {
+		padding: 0;
+	}
 
 	a {
 		color: inherit;
 		text-decoration: none;
 		width: 100%;
 		height: 100%;
+		display: inline-block;
+		padding: 0.25em 1em;
 	}
 
 	.selected {
