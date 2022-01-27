@@ -44,7 +44,26 @@
 			}
 		})()
 	onMount(updateSidebarForMobile)
+
+	let touchStartPosX: number | null = 0
+	function touchStart(event: TouchEvent) {
+		if (event.touches.length !== 1 || window.getSelection()?.toString() !== '') {
+			touchStartPosX = null
+			return
+		}
+		const touch = event.touches[0]
+		touchStartPosX = touch.clientX
+	}
+	function touchEnd(event: TouchEvent) {
+		if (event.touches.length !== 1 || touchStartPosX === null) return
+		const touch = event.touches[0]
+		const touchEndPosX = touch.clientX
+
+		if (touchStartPosX < 80 && touchEndPosX > 100) sidebarHidden = false
+	}
 </script>
+
+<svelte:window on:touchstart={touchStart} on:touchmove={touchEnd} />
 
 <svelte:head>
 	<title>

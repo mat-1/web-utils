@@ -43,6 +43,7 @@
 	function onWindowKeydown(event: KeyboardEvent) {
 		if (event.ctrlKey && event.key === '/') {
 			searchBarEl.focus()
+			event.preventDefault()
 		}
 	}
 </script>
