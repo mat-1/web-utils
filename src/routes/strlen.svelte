@@ -5,6 +5,10 @@
 	import Label from '$lib/Label.svelte'
 
 	let string = ''
+
+	$: charCount = [...string].length
+	$: utf16ByteCount = string.length
+	$: utf8ByteCount = (new TextEncoder().encode(string)).length
 </script>
 
 <Double>
@@ -13,7 +17,15 @@
 	</Part>
 	<Part>
 		<Label>Characters</Label>
-		<p>{string.length}</p>
+		<p>{charCount}</p>
+		{#if utf8ByteCount != charCount}
+		<Label>Bytes (UTF-8)</Label>
+		<p>{utf8ByteCount}</p>
+		{/if}
+		{#if utf16ByteCount != utf8ByteCount}
+		<Label>Bytes (UTF-16)</Label>
+		<p>{utf16ByteCount}</p>
+		{/if}
 		<Label>Words</Label>
 		<p>
 			{string

@@ -57,13 +57,14 @@ function utf8decode(str: string): string {
 const base64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='
 const nonBase64CharsRegex = /[^A-Za-z0-9+/=]|=+$/g
 
-export function b64encode(str: string): string {
-	return btoa(unescape(encodeURIComponent(str.replace(/[\ud800-\udfff]/g, '�'))))
+export function b64encode(str: string, replaceUnknown = true): string {
+	if (replaceUnknown) str = str.replace(/[\ud800-\udfff]/g, '�')
+	return btoa(unescape(encodeURIComponent(str)))
 }
 
 /** A base64 decoder that doesn't complain about invalid characters */
 export function b64decode(str: string): string {
-	let output = ''
+	let charCodes = []
 
 	str = str.replace(nonBase64CharsRegex, '')
 
@@ -77,14 +78,13 @@ export function b64decode(str: string): string {
 		const chr2 = ((enc2 & 15) << 4) | (enc3 >> 2)
 		const chr3 = ((enc3 & 3) << 6) | enc4
 
-		output = output + String.fromCharCode(chr1)
+		charCodes.push(chr1)
 
-		if (enc3 !== 64 && chr2 !== 0) output = output + String.fromCharCode(chr2)
-		if (enc4 !== 64 && chr3 !== 0) output = output + String.fromCharCode(chr3)
+		if (enc3 !== 64 && chr2 !== 0) charCodes.push(chr2)
+		if (enc4 !== 64 && chr3 !== 0) charCodes.push(chr3)
 	}
 
-	output = utf8decode(output)
-
+	let output = new TextDecoder().decode(new Uint8Array(charCodes))
 	return output
 }
 
@@ -100,7 +100,7 @@ export function storeValue(id: string, value: string): void {
 		stores[id] = store
 		storeValues[id] = value
 		store.subscribe((v) => {
-			localStorage.setItem(id, b64encode(v))
+			localStorage.setItem(id, b64encode(v, false))
 			storeValues[id] = v
 		})
 	} else stores[id].set(value)
@@ -177,10 +177,10 @@ export const utilities = [
 	},
 	{
 		name: 'HTML Encode/Decode',
-		href: '/htmlentities'
+		href: '/htmlentities',
 	},
 	{
 		name: 'Datetime',
-		href: '/datetime'
-	}
+		href: '/datetime',
+	},
 ]

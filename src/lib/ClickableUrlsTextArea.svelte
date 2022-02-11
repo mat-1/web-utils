@@ -10,7 +10,7 @@
 
 	const render = (text: string) => {
 		return anchorme({
-			input: text,
+			input: text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'),
 		})
 	}
 </script>
