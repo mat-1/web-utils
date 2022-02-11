@@ -34,16 +34,16 @@
 	</Part>
 	<Part>
 		<Label>MD5</Label>
-		<p>{md5}</p>
+		<p><code>{md5}</code></p>
 		<Label>SHA-1</Label>
-		<p>{sha1}</p>
+		<p><code>{sha1}</code></p>
 		<Label>SHA-256</Label>
-		<p>{sha256}</p>
+		<p><code>{sha256}</code></p>
 		<Label>SHA-384</Label>
-		<p>{sha384}</p>
+		<p><code>{sha384}</code></p>
 		<Label>SHA-512</Label>
-		<p>{sha512}</p>
+		<p><code>{sha512}</code></p>
 		<Label>CRC32</Label>
-		<p>{crc32}</p>
+		<p><code>{crc32}</code></p>
 	</Part>
 </Double>

@@ -17,6 +17,7 @@
 
 <style>
 	.label {
+		display: block;
 		color: var(--text-color-alt);
 		font-size: 0.8em;
 		position: relative;
