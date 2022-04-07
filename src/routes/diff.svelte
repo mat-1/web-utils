@@ -70,6 +70,8 @@
 	.rendered-diff {
 		white-space: pre-wrap;
 		word-wrap: break-word;
+		height: 100%;
+		overflow: scroll;
 	}
 
 	p {
