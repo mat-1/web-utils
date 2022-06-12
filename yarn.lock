@@ -360,10 +360,10 @@
     estree-walker "^2.0.1"
     picomatch "^2.2.2"
 
-"@sveltejs/adapter-static@^1.0.0-next.26":
-  version "1.0.0-next.26"
-  resolved "https://registry.yarnpkg.com/@sveltejs/adapter-static/-/adapter-static-1.0.0-next.26.tgz#639e9ad8a9e846b750cd81d49ace48390af9d28f"
-  integrity sha512-LXR0HkPygZ+m9wJhFqbYWbJ0jquhgUK6vL/8AwnqbAZGGtQFloMpf49WOANk7MiLBeY6L97W5jPLSxHiDW3T0Q==
+"@sveltejs/adapter-static@^1.0.0-next.34":
+  version "1.0.0-next.34"
+  resolved "https://registry.yarnpkg.com/@sveltejs/adapter-static/-/adapter-static-1.0.0-next.34.tgz#f17e967e43f73e57feed6d81d8151de1e09d9836"
+  integrity sha512-XjuMhemme5z0L/B2nTZpA6k+RJjF+b6L96ts6gIQ6ixiCzJQSbBqJhrrBYBCaeLAKvdUMoGEmX8m862JhKjRFg==
   dependencies:
     tiny-glob "^0.2.9"
 
