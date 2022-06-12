@@ -19,7 +19,9 @@ const config = {
 
 	kit: {
 		adapter: staticAdapter(),
-
+		prerender: {
+			default: true,
+		},
 		vite: {
 			build: {
 				target: 'es2020',
