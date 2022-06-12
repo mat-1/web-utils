@@ -252,7 +252,7 @@
 				id="base-n-alphabet"
 				name="base-n-alphabet"
 				bind:value={baseNAlphabet}
-				on:change={updateBases}
+				on:change={updateBaseN}
 			>
 				<option value={alphabet} selected={true}>Normal (0-9 a-z A-Z)</option>
 				<option value={b64Alphabet}>Base64 (A-Z a-z 0-9)</option>
