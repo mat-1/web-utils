@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { extractData, supportedUuidNames, uuidDatas } from '$lib/uuid'
+	import { extractData, supportedUuidTypes, uuidDatas } from '$lib/uuid'
 	import type { UuidData } from '$lib/uuid'
 	import Input from '$lib/Input.svelte'
 	import Label from '$lib/Label.svelte'
@@ -41,7 +41,7 @@
 			<div class="supported-uuids">
 				Supported UUIDs:
 				<ul>
-					{#each supportedUuidNames as name}
+					{#each supportedUuidTypes as name}
 						<li>{name}</li>
 					{/each}
 				</ul>
