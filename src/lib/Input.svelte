@@ -20,13 +20,13 @@
 		const storedValue = getValue(id)
 		if (id && storedValue) value = storedValue
 		mounted = true
-		console.log('value', id, value)
+		// console.log('value', id, value)
 	})
 
 	$: {
 		if (id && mounted) {
 			storeValue(id, value)
-			console.log('store value', id, value)
+			// console.log('store value', id, value)
 		}
 	}
 </script>

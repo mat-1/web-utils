@@ -10,7 +10,6 @@
 	let base2: string
 	let base8: string
 	let base10: string
-	let base12: string
 	let base16: string
 	let base64: string
 	let utf8: string
@@ -25,7 +24,6 @@
 	let highestBase = alphabet.length
 
 	// https://stackoverflow.com/a/32480941
-
 	function fromBase10(n: string, radix: number, toAlphabet: string): string {
 		// if it's unary, repeat 0 n times
 		if (radix === 1) {
@@ -70,7 +68,6 @@
 		base2 = fromBase10(number, 2, alphabet)
 		base8 = fromBase10(number, 8, alphabet)
 		base10 = fromBase10(number, 10, alphabet)
-		base12 = fromBase10(number, 12, alphabet)
 		base16 = fromBase10(number, 16, alphabet)
 		base64 = fromBase10(number, 64, b64Alphabet)
 		utf8 = b64decode(base64)
@@ -78,31 +75,51 @@
 	}
 
 	const updateBase2 = () => {
-		number = toBase10(base2, 2, alphabet)
+		try {
+			number = toBase10(base2, 2, alphabet)
+		} catch (e) {
+			console.error(e)
+		}
 		updateBases()
 	}
 	const updateBase8 = () => {
-		number = toBase10(base8, 8, alphabet)
+		try {
+			number = toBase10(base8, 8, alphabet)
+		} catch (e) {
+			console.error(e)
+		}
 		updateBases()
 	}
 	const updateBase10 = () => {
-		number = toBase10(base10, 10, alphabet)
-		updateBases()
-	}
-	const updateBase12 = () => {
-		number = toBase10(base12, 12, alphabet)
+		try {
+			number = toBase10(base10, 10, alphabet)
+		} catch (e) {
+			console.error(e)
+		}
 		updateBases()
 	}
 	const updateBase16 = () => {
-		number = toBase10(base16, 16, alphabet)
+		try {
+			number = toBase10(base16, 16, alphabet)
+		} catch (e) {
+			console.error(e)
+		}
 		updateBases()
 	}
 	const updateBase64 = () => {
-		number = toBase10(base64, 64, b64Alphabet)
+		try {
+			number = toBase10(base64, 64, b64Alphabet)
+		} catch (e) {
+			console.error(e)
+		}
 		updateBases()
 	}
 	const updateUtf8 = () => {
-		number = toBase10(b64encode(utf8).replace(/=/g, ''), 64, b64Alphabet)
+		try {
+			number = toBase10(b64encode(utf8).replace(/=/g, ''), 64, b64Alphabet)
+		} catch (e) {
+			console.error(e)
+		}
 		updateBases()
 	}
 	const updateBaseNRadix = () => {
@@ -113,7 +130,11 @@
 		if (baseNRadix !== '') updateBases()
 	}
 	const updateBaseN = () => {
-		number = toBase10(baseN, parseInt(baseNRadix), baseNAlphabet)
+		try {
+			number = toBase10(baseN, parseInt(baseNRadix), baseNAlphabet)
+		} catch (e) {
+			console.error(e)
+		}
 		updateBases()
 	}
 
@@ -204,12 +225,6 @@
 		on:input={updateBase10}
 	/>
 	<Input
-		id="base12"
-		label="Base 12 ({getBaseName(12)})"
-		bind:value={base12}
-		on:input={updateBase12}
-	/>
-	<Input
 		id="base16"
 		label="Base 16 ({getBaseName(16)})"
 		bind:value={base16}
@@ -224,7 +239,7 @@
 	<Input id="UTF-8" label="UTF-8" bind:value={utf8} on:input={updateUtf8} />
 	<hr />
 	<div class="base-n-container">
-		<Input id="base-n" bind:value={baseN} on:input={updateBaseN}>
+		<Input id="base-n" bind:value={baseN} on:input={updateBaseN} disabled={!baseNRadix}>
 			<div slot="label">
 				Base
 				<Input id="baseNRadix" bind:value={baseNRadix} on:input={updateBaseNRadix} inline small />
@@ -237,7 +252,7 @@
 				id="base-n-alphabet"
 				name="base-n-alphabet"
 				bind:value={baseNAlphabet}
-				on:input={updateBaseNRadix}
+				on:change={updateBases}
 			>
 				<option value={b64Alphabet} selected={true}>Base64 (A-Z a-z 0-9)</option>
 				<option value={alphabet}>0-9 a-z A-Z</option>
