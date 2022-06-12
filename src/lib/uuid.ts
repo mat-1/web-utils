@@ -24,10 +24,10 @@ export const uuidDatas: { name: string; key: string }[] = [
 		key: 'mac',
 	},
 ]
-export const supportedUuidNames = ['UUID v1', 'UUID v4', 'Snowflake', 'ObjectID'] as const
+export const supportedUuidTypes = ['UUID v1', 'UUID v4', 'Snowflake', 'ObjectID'] as const
 
 export interface UuidData {
-	type: typeof supportedUuidNames[number]
+	type: typeof supportedUuidTypes[number]
 	timestamp?: Date
 	workerId?: number
 	processId?: number
