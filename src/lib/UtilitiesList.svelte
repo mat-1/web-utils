@@ -67,19 +67,24 @@
 			<ListItem href={utility.href}>{utility.name}</ListItem>
 		{/each}
 	</ul>
+	<div class="credits">
+		<p>By <a href="https://matdoes.dev">mat</a>.</p>
+	</div>
 </div>
 
 <style>
 	.utilities-list-container {
 		padding: 0.25em;
 		width: 100%;
+		display: grid;
+		grid-template-rows: auto 1fr auto;
+		height: 100%;
 	}
 	ul {
 		list-style: none;
 		padding: 0;
-		margin-top: 0;
+		margin: 0;
 		overflow-y: auto;
-		height: calc(100vh - 3rem);
 	}
 	.search {
 		display: block;
@@ -97,7 +102,6 @@
 		}
 		ul {
 			margin-top: -0.7rem;
-			height: calc(100vh - 2.5rem);
 		}
 		:global(.hamburger-hidden) .search {
 			width: calc(100% - 1rem);
@@ -106,5 +110,10 @@
 	}
 	.search-container {
 		padding: 0.25em 0.25em 0 0.25em;
+	}
+	.credits p {
+		text-align: center;
+		margin: 0.25em 0;
+		opacity: 0.5;
 	}
 </style>
