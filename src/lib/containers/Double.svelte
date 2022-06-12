@@ -1,11 +1,11 @@
 <!-- A container with two parts -->
 
 <div class="container">
-    <slot />
+	<slot />
 </div>
 
 <style>
-    /* stack the containers on top of each other */
+	/* stack the containers on top of each other */
 	.container {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
@@ -16,6 +16,7 @@
 		right: 0;
 		bottom: 0;
 		height: 100%;
+		overflow: auto;
 	}
 
 	@media (max-width: 440px) {

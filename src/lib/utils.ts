@@ -64,7 +64,7 @@ export function b64encode(str: string, replaceUnknown = true): string {
 
 /** A base64 decoder that doesn't complain about invalid characters */
 export function b64decode(str: string): string {
-	let charCodes = []
+	const charCodes = []
 
 	str = str.replace(nonBase64CharsRegex, '')
 
@@ -84,7 +84,7 @@ export function b64decode(str: string): string {
 		if (enc4 !== 64 && chr3 !== 0) charCodes.push(chr3)
 	}
 
-	let output = new TextDecoder().decode(new Uint8Array(charCodes))
+	const output = new TextDecoder().decode(new Uint8Array(charCodes))
 	return output
 }
 
@@ -109,14 +109,14 @@ export function storeValue(id: string, value: string): void {
 /**
  * Get something that was previously stored in localStorage. Will return an empty string if the value is not found.
  */
-export function getValue(id: string): string {
+export function getValue(id: string): string | undefined {
 	if (!(id in stores)) {
 		return b64decode(localStorage.getItem(id) || '')
 	} else {
 		try {
 			return storeValues[id] ? storeValues[id] : b64decode(localStorage.getItem(id) || '')
 		} catch {
-			return ''
+			return
 		}
 	}
 }
@@ -152,7 +152,7 @@ export const utilities = [
 		href: '/url',
 	},
 	{
-		name: 'Number Base Converter',
+		name: 'Base Converter',
 		href: '/basen',
 	},
 	{

@@ -2,6 +2,8 @@
 	import Single from '$lib/containers/Single.svelte'
 	import Input from '$lib/Input.svelte'
 	import { onMount } from 'svelte'
+	import { b64decode, b64encode } from '$lib/utils'
+	import Label from '$lib/Label.svelte'
 
 	// this number is a string so it can be infinitely large
 	let number = '0'
@@ -10,16 +12,21 @@
 	let base10: string
 	let base12: string
 	let base16: string
+	let base64: string
+	let utf8: string
 
-	let baseNRadix = ''
+	let baseNRadix = '62'
 	let baseN: string
 
-	const alphabet = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+/'.split('')
+	const alphabet = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+/'
+	const b64Alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+	let baseNAlphabet = b64Alphabet
+
 	let highestBase = alphabet.length
 
 	// https://stackoverflow.com/a/32480941
 
-	function fromBase10(n: string, radix: number): string {
+	function fromBase10(n: string, radix: number, toAlphabet: string): string {
 		// if it's unary, repeat 0 n times
 		if (radix === 1) {
 			let parsedInt = parseInt(n)
@@ -30,24 +37,22 @@
 		let decValue = BigInt(n)
 
 		const toBaseBigint = BigInt(radix)
-		const toAlphabet = alphabet.slice(0, radix)
+		toAlphabet = toAlphabet.slice(0, radix)
 
 		let newValue = ''
 		while (decValue > 0) {
 			newValue = toAlphabet[Number(decValue % toBaseBigint)] + newValue
 			decValue = (decValue - (decValue % toBaseBigint)) / toBaseBigint
 		}
-		return newValue || '0'
+		return newValue || ''
 	}
-	function toBase10(n: string, radix: number): string {
-		// let parsedInt = parseInt(n, radix)
-
-		// // if it's unary, return the length
+	function toBase10(n: string, radix: number, fromAlphabet: string): string {
+		// if it's unary, return the length
 		if (radix === 1) return n.length.toString()
 
 		const fromBaseBigint = BigInt(radix)
 
-		const fromAlphabet = alphabet.slice(0, radix)
+		fromAlphabet = fromAlphabet.slice(0, radix)
 
 		let decValue: bigint = n
 			.split('')
@@ -59,38 +64,45 @@
 				return (carry += digitIndex * fromBaseBigint ** BigInt(index))
 			}, 0n)
 		return decValue.toString()
-
-		// if (isNaN(parsedInt)) parsedInt = 0
-		// return parsedInt.toString()
 	}
 
 	function updateBases() {
-		base2 = fromBase10(number, 2)
-		base8 = fromBase10(number, 8)
-		base10 = fromBase10(number, 10)
-		base12 = fromBase10(number, 12)
-		base16 = fromBase10(number, 16)
-		if (baseNRadix !== '') baseN = fromBase10(number, parseInt(baseNRadix))
+		base2 = fromBase10(number, 2, alphabet)
+		base8 = fromBase10(number, 8, alphabet)
+		base10 = fromBase10(number, 10, alphabet)
+		base12 = fromBase10(number, 12, alphabet)
+		base16 = fromBase10(number, 16, alphabet)
+		base64 = fromBase10(number, 64, b64Alphabet)
+		utf8 = b64decode(base64)
+		if (baseNRadix !== '') baseN = fromBase10(number, parseInt(baseNRadix), baseNAlphabet)
 	}
 
 	const updateBase2 = () => {
-		number = toBase10(base2, 2)
+		number = toBase10(base2, 2, alphabet)
 		updateBases()
 	}
 	const updateBase8 = () => {
-		number = toBase10(base8, 8)
+		number = toBase10(base8, 8, alphabet)
 		updateBases()
 	}
 	const updateBase10 = () => {
-		number = toBase10(base10, 10)
+		number = toBase10(base10, 10, alphabet)
 		updateBases()
 	}
 	const updateBase12 = () => {
-		number = toBase10(base12, 12)
+		number = toBase10(base12, 12, alphabet)
 		updateBases()
 	}
 	const updateBase16 = () => {
-		number = toBase10(base16, 16)
+		number = toBase10(base16, 16, alphabet)
+		updateBases()
+	}
+	const updateBase64 = () => {
+		number = toBase10(base64, 64, b64Alphabet)
+		updateBases()
+	}
+	const updateUtf8 = () => {
+		number = toBase10(b64encode(utf8).replace(/=/g, ''), 64, b64Alphabet)
 		updateBases()
 	}
 	const updateBaseNRadix = () => {
@@ -101,7 +113,7 @@
 		if (baseNRadix !== '') updateBases()
 	}
 	const updateBaseN = () => {
-		number = toBase10(baseN, parseInt(baseNRadix))
+		number = toBase10(baseN, parseInt(baseNRadix), baseNAlphabet)
 		updateBases()
 	}
 
@@ -203,19 +215,46 @@
 		bind:value={base16}
 		on:input={updateBase16}
 	/>
-	<hr />
 	<Input
-		id="baseNRadix"
-		label="Custom Base Radix"
-		bind:value={baseNRadix}
-		on:input={updateBaseNRadix}
+		id="base64"
+		label="Base 64 ({getBaseName(64)})"
+		bind:value={base64}
+		on:input={updateBase64}
 	/>
-	{#if baseNRadix}
-		<Input
-			id="baseN"
-			label="Base {baseNRadix} ({getBaseName(parseInt(baseNRadix))})"
-			bind:value={baseN}
-			on:input={updateBaseN}
-		/>
-	{/if}
+	<Input id="UTF-8" label="UTF-8" bind:value={utf8} on:input={updateUtf8} />
+	<hr />
+	<div class="base-n-container">
+		<Input id="base-n" bind:value={baseN} on:input={updateBaseN}>
+			<div slot="label">
+				Base
+				<Input id="baseNRadix" bind:value={baseNRadix} on:input={updateBaseNRadix} inline small />
+				({getBaseName(parseInt(baseNRadix))})
+			</div>
+		</Input>
+		<div>
+			<Label for="base-n-alphabet">Character set</Label>
+			<select
+				id="base-n-alphabet"
+				name="base-n-alphabet"
+				bind:value={baseNAlphabet}
+				on:input={updateBaseNRadix}
+			>
+				<option value={b64Alphabet} selected={true}>Base64 (A-Z a-z 0-9)</option>
+				<option value={alphabet}>0-9 a-z A-Z</option>
+			</select>
+		</div>
+	</div>
 </Single>
+
+<style>
+	.base-n-container {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		grid-gap: 0.5em;
+	}
+	@media (max-width: 600px) {
+		.base-n-container {
+			display: block;
+		}
+	}
+</style>

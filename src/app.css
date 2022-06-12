@@ -95,7 +95,7 @@ select {
 	font-size: 0.85em;
 	color: var(--text-color);
 	height: 2em;
-	/* padding: 0.5em; */
+	margin-bottom: 0.5em;
 }
 
 /* remove the shadows safari adds to textareas */

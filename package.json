@@ -23,7 +23,6 @@
 		"fast-glob": "^3.2.7",
 		"prettier": "^2.4.1",
 		"prettier-plugin-svelte": "^2.4.0",
-		"svelte-check": "^2.3.0",
 		"svelte-preprocess": "^4.10.2",
 		"tslib": "^2.3.1",
 		"typescript": "^4.4.3"
@@ -46,11 +45,12 @@
 		"@codemirror/state": "^0.19.5",
 		"@codemirror/view": "^0.19.16",
 		"@lukeed/uuid": "^2.0.0",
-		"@sveltejs/kit": "^1.0.0-next.242",
+		"@sveltejs/kit": "^1.0.0-next.350",
 		"anchorme": "^2.1.2",
 		"cookie": "^0.4.1",
 		"fast-diff": "^1.2.0",
 		"hash-wasm": "^4.9.0",
-		"svelte": "^3.46.2"
+		"svelte": "^3.48.0",
+		"svelte-check": "^2.7.2"
 	}
 }

@@ -132,7 +132,7 @@
 	let mounted = false
 	onMount(() => {
 		mounted = true
-		value = id ? getValue(id) : ''
+		value = id ? getValue(id) ?? '' : ''
 	})
 	$: {
 		if (id && browser && mounted) storeValue(id, value)
@@ -150,7 +150,7 @@
 		border-radius: 0.5em;
 		resize: none;
 		width: 100%;
-		height: 100%;
+		height: calc(100% - 1em);
 		display: block;
 		margin: 0;
 		padding: 0.25em;
