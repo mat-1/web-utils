@@ -6,7 +6,7 @@
 	import Double from '$lib/containers/Double.svelte'
 	import Part from '$lib/containers/Part.svelte'
 
-	let userUuid: string | undefined
+	let userUuid: string
 	let uuidData: Partial<UuidData> = {}
 	let snowflakeEpoch: string
 	let snowflakeEpochBigint: bigint | undefined

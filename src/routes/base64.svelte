@@ -17,7 +17,10 @@
 
 	function updateEncoded() {
 		const newEncoded = encodeLinesSeparately
-			? decoded.split('\n').map(b64encode).join('\n')
+			? decoded
+					.split('\n')
+					.map((l) => b64encode(l))
+					.join('\n')
 			: b64encode(decoded)
 		if (newEncoded !== encoded) encoded = newEncoded
 	}
