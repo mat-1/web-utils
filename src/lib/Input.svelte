@@ -3,7 +3,7 @@
 	import { onMount } from 'svelte'
 	import { getValue, storeValue } from './utils'
 
-	export let value: string
+	export let value = ''
 	export let placeholder = ''
 
 	export let id = ''
