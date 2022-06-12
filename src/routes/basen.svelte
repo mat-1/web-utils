@@ -254,8 +254,14 @@
 				bind:value={baseNAlphabet}
 				on:change={updateBases}
 			>
-				<option value={b64Alphabet} selected={true}>Base64 (A-Z a-z 0-9)</option>
-				<option value={alphabet}>0-9 a-z A-Z</option>
+				<option value={alphabet} selected={true}>Normal (0-9 a-z A-Z)</option>
+				<option value={b64Alphabet}>Base64 (A-Z a-z 0-9)</option>
+				<option value="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/">
+					a-z A-Z 0-9
+				</option>
+				<option value="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/">
+					0-9 A-Z a-z
+				</option>
 			</select>
 		</div>
 	</div>
