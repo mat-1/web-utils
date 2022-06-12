@@ -108,7 +108,7 @@
 	}
 	const updateBase64 = () => {
 		try {
-			number = toBase10(base64, 64, b64Alphabet)
+			number = toBase10(base64.replace(/=/g, ''), 64, b64Alphabet)
 		} catch (e) {
 			console.error(e)
 		}
