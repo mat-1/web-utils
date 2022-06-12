@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { extractData, uuidDatas } from '$lib/uuid'
+	import { extractData, supportedUuidNames, uuidDatas } from '$lib/uuid'
 	import type { UuidData } from '$lib/uuid'
 	import Input from '$lib/Input.svelte'
 	import Label from '$lib/Label.svelte'
@@ -29,12 +29,23 @@
 <Double>
 	<Part>
 		<Input id="uuid-input" label="UUID" bind:value={userUuid} />
-		{#if 'type' in uuidData && uuidData.type === 'Snowflake'}
-			<Label>Epoch</Label>
-			<select name="epoch" bind:value={snowflakeEpoch}>
-				<option value="1420070400000" selected={true}>Discord</option>
-				<option value="1288834974657">Twitter</option>
-			</select>
+		{#if 'type' in uuidData}
+			{#if uuidData.type === 'Snowflake'}
+				<Label>Epoch</Label>
+				<select name="epoch" bind:value={snowflakeEpoch}>
+					<option value="1420070400000" selected={true}>Discord</option>
+					<option value="1288834974657">Twitter</option>
+				</select>
+			{/if}
+		{:else}
+			<div class="supported-uuids">
+				Supported UUIDs:
+				<ul>
+					{#each supportedUuidNames as name}
+						<li>{name}</li>
+					{/each}
+				</ul>
+			</div>
 		{/if}
 	</Part>
 	<Part>
@@ -48,3 +59,13 @@
 		{/each}
 	</Part>
 </Double>
+
+<style>
+	ul {
+		margin: 0;
+		padding-left: 1.5em;
+	}
+	.supported-uuids {
+		opacity: 0.5;
+	}
+</style>
