@@ -6,7 +6,7 @@
 	export let id: string | undefined
 	export let label: string | undefined
 
-	export let element: HTMLTextAreaElement | undefined = undefined
+	export let element: HTMLDivElement | undefined = undefined
 
 	const render = (text: string) => {
 		return anchorme({

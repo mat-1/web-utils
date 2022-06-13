@@ -1,7 +1,6 @@
 <script lang="ts">
 	import ClickableUrlsTextArea from '$lib/ClickableUrlsTextArea.svelte'
 	import Label from '$lib/Label.svelte'
-	import { onMount } from 'svelte'
 	import { browser } from '$app/env'
 	import * as hashWasm from 'hash-wasm'
 	import Double from '$lib/containers/Double.svelte'
