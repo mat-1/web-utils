@@ -22,7 +22,7 @@
 	@media (max-width: 440px) {
 		.container {
 			grid-template-columns: 1fr;
-			grid-template-rows: 1fr 1fr;
+			grid-template-rows: minmax(25%, auto) minmax(25%, auto);
 		}
 	}
 </style>

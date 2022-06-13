@@ -8,5 +8,6 @@
 		position: relative;
 		overflow-wrap: break-word;
 		min-width: 5em;
+		min-height: 5em;
 	}
 </style>
