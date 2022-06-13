@@ -8,6 +8,7 @@
 	import Triple from '$lib/containers/Triple.svelte'
 	import Part from '$lib/containers/Part.svelte'
 	import Options from '$lib/containers/Options.svelte'
+	import IconButton from '$lib/IconButton.svelte'
 
 	let before: string
 	let after: string
@@ -43,9 +44,9 @@
 <Triple>
 	<Part>
 		<Options>
-			<button class="swap-button" on:click={swapBeforeAfter} aria-label="Swap textboxes">
+			<IconButton on:click={swapBeforeAfter} arialabel="Swap textboxes">
 				<Swap />
-			</button>
+			</IconButton>
 		</Options>
 		<TextArea bind:value={before} id="diff-before" label="Before" on:input={renderDiff} />
 	</Part>
@@ -73,14 +74,6 @@
 	}
 
 	p {
-		margin: 0;
-	}
-
-	.swap-button {
-		border: none;
-		background: none;
-		font-size: inherit;
-		padding: 0;
 		margin: 0;
 	}
 </style>

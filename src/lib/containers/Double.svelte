@@ -8,7 +8,7 @@
 	/* stack the containers on top of each other */
 	.container {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		grid-auto-flow: column;
 		grid-template-rows: 1fr;
 		position: absolute;
 		top: 0;
@@ -24,5 +24,8 @@
 			grid-template-columns: 1fr;
 			grid-template-rows: minmax(25%, auto) minmax(25%, auto);
 		}
+	}
+	.container > * {
+		grid-column: 1 / span 2;
 	}
 </style>

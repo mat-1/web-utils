@@ -1,154 +1,188 @@
 <script lang="ts">
-	import Single from '$lib/containers/Single.svelte'
 	import Input from '$lib/Input.svelte'
 	import { onMount } from 'svelte'
 	import { b64decode, b64encode } from '$lib/utils'
 	import Label from '$lib/Label.svelte'
+	import IconButton from '$lib/IconButton.svelte'
+	import Part from '$lib/containers/Part.svelte'
+	import Double from '$lib/containers/Double.svelte'
+	import { quintOut } from 'svelte/easing'
+	import { crossfade } from 'svelte/transition'
+	import { flip } from 'svelte/animate'
 
-	// this number is a string so it can be infinitely large
-	let number = '0'
-	let base2: string
-	let base8: string
-	let base10: string
-	let base16: string
-	let base64: string
-	let utf8: string
+	let number: bigint = 0n
 
-	let baseNRadix = '62'
-	let baseN: string
+	let lastModifiedBaseId: BaseItem['id'] | undefined = undefined
 
-	let lastModified = ''
+	const charset = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+/'
+	const b64charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+	let baseNcharset = b64charset
 
-	const alphabet = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+/'
-	const b64Alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
-	let baseNAlphabet = b64Alphabet
+	let highestBase = charset.length
 
-	let highestBase = alphabet.length
+	type BaseItem =
+		| {
+				id: string
+				base: `${number}` | ''
+				value: string
+				charset: string
+				modifiable?: boolean
+		  }
+		| {
+				id: string
+				base: 'utf8'
+				value: string
+		  }
+
+	let baseId = 0
+	function newBaseId(): number {
+		return baseId++
+	}
+
+	const bases: BaseItem[] = [
+		{
+			id: 'base2',
+			base: '2',
+			value: '',
+			charset,
+		},
+		{
+			id: 'base8',
+			base: '8',
+			value: '',
+			charset,
+		},
+		{
+			id: 'base10',
+			base: '10',
+			value: '',
+			charset,
+		},
+		{
+			id: 'base16',
+			base: '16',
+			value: '',
+			charset,
+		},
+		{
+			id: 'base64',
+			base: '64',
+			value: '',
+			charset: b64charset,
+		},
+		{
+			id: 'utf8',
+			base: 'utf8',
+			value: '',
+		},
+		{
+			id: 'n',
+			base: '62',
+			value: '',
+			modifiable: true,
+			charset,
+		},
+	]
+
+	interface Charset {
+		name: string
+		chars: string
+	}
+
+	const charsets: Charset[] = [
+		{
+			name: 'Normal (0-9 a-z A-Z)',
+			chars: charset,
+		},
+		{
+			name: 'Base64 (A-Z a-z 0-9)',
+			chars: b64charset,
+		},
+		{
+			name: 'a-z A-Z 0-9',
+			chars: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/',
+		},
+		{
+			name: '0-9 A-Z a-z',
+			chars: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/',
+		},
+	]
 
 	// https://stackoverflow.com/a/32480941
-	function fromBase10(n: string, radix: number, toAlphabet: string): string {
+	function fromBase10(n: bigint, radix: number, tocharset: string): string {
 		// if it's unary, repeat 0 n times
 		if (radix === 1) {
-			let parsedInt = parseInt(n)
 			// we limit it at 300 to not lag the browser and because it looks big enough
-			return parsedInt < 300 ? '0'.repeat(parsedInt) : '0'.repeat(300)
+			return n < 300 ? '0'.repeat(Number(n)) : '0'.repeat(300)
 		}
 
-		let decValue = BigInt(n)
+		let decValue = n
 
 		const toBaseBigint = BigInt(radix)
-		toAlphabet = toAlphabet.slice(0, radix)
+		tocharset = tocharset.slice(0, radix)
 
 		let newValue = ''
 		while (decValue > 0) {
-			newValue = toAlphabet[Number(decValue % toBaseBigint)] + newValue
+			newValue = tocharset[Number(decValue % toBaseBigint)] + newValue
 			decValue = (decValue - (decValue % toBaseBigint)) / toBaseBigint
 		}
 		return newValue || ''
 	}
-	function toBase10(n: string, radix: number, fromAlphabet: string): string {
+	function toBase10(n: string, radix: number, fromcharset: string): bigint {
 		// if it's unary, return the length
-		if (radix === 1) return n.length.toString()
+		if (radix === 1) return BigInt(n.toString().length)
 
 		const fromBaseBigint = BigInt(radix)
 
-		fromAlphabet = fromAlphabet.slice(0, radix)
+		fromcharset = fromcharset.slice(0, radix)
 
 		let decValue: bigint = n
 			.split('')
 			.reverse()
 			.reduce((carry: bigint, digit: string, index: number) => {
-				if (fromAlphabet.indexOf(digit) === -1)
+				if (fromcharset.indexOf(digit) === -1)
 					throw new Error(`Invalid digit '${digit}' for base ${radix}.`)
-				const digitIndex = BigInt(fromAlphabet.indexOf(digit))
+				const digitIndex = BigInt(fromcharset.indexOf(digit))
 				return (carry += digitIndex * fromBaseBigint ** BigInt(index))
 			}, 0n)
-		return decValue.toString()
+		return decValue
 	}
 
 	function updateBases() {
-		base2 = fromBase10(number, 2, alphabet)
-		base8 = fromBase10(number, 8, alphabet)
-		base10 = fromBase10(number, 10, alphabet)
-		base16 = fromBase10(number, 16, alphabet)
-		base64 = fromBase10(number, 64, b64Alphabet)
-		utf8 = b64decode(base64)
-		if (baseNRadix !== '') baseN = fromBase10(number, parseInt(baseNRadix), baseNAlphabet)
+		for (const base of bases) {
+			if (base.base === 'utf8') base.value = b64decode(fromBase10(number, 64, b64charset))
+			else base.value = fromBase10(number, Number(base.base), base.charset)
+		}
 	}
 
-	const updateBase2 = () => {
-		lastModified = '2'
+	const updateBase = (base: BaseItem) => {
+		lastModifiedBaseId = base.id
 		try {
-			number = toBase10(base2, 2, alphabet)
+			if (base.base === 'utf8')
+				number = toBase10(b64encode(base.value).replace(/=/g, ''), 64, b64charset)
+			else number = toBase10(base.value, Number(base.base), base.charset)
 		} catch (e) {
 			console.error(e)
 		}
 		updateBases()
 	}
-	const updateBase8 = () => {
-		lastModified = '8'
-		try {
-			number = toBase10(base8, 8, alphabet)
-		} catch (e) {
-			console.error(e)
-		}
-		updateBases()
-	}
-	const updateBase10 = () => {
-		lastModified = '10'
-		try {
-			number = toBase10(base10, 10, alphabet)
-		} catch (e) {
-			console.error(e)
-		}
-		updateBases()
-	}
-	const updateBase16 = () => {
-		lastModified = '16'
-		try {
-			number = toBase10(base16, 16, alphabet)
-		} catch (e) {
-			console.error(e)
-		}
-		updateBases()
-	}
-	const updateBase64 = () => {
-		lastModified = '64'
-		try {
-			number = toBase10(base64.replace(/=/g, ''), 64, b64Alphabet)
-		} catch (e) {
-			console.error(e)
-		}
-		updateBases()
-	}
-	const updateUtf8 = () => {
-		lastModified = 'utf8'
-		try {
-			number = toBase10(b64encode(utf8).replace(/=/g, ''), 64, b64Alphabet)
-		} catch (e) {
-			console.error(e)
-		}
-		updateBases()
-	}
-	const updateBaseNRadix = () => {
-		if (baseNRadix !== '' && isNaN(parseInt(baseNRadix))) baseNRadix = '1'
-		if (parseInt(baseNRadix) < 1) baseNRadix = '1'
-		if (parseInt(baseNRadix) > highestBase) baseNRadix = highestBase.toString()
 
-		if (baseNRadix !== '') updateBases()
+	const updateBaseNRadix = (base: BaseItem) => {
+		if (base.base === '') {
+		} else if (isNaN(parseInt(base.base))) base.base = ''
+		else if (Number(base.base) < 1) base.base = '1'
+		else if (Number(base.base) > highestBase) base.base = highestBase.toString() as any
+
+		if (base.base !== '') updateBases()
 	}
-	const updateBaseN = () => {
-		lastModified = 'n'
-		try {
-			number = toBase10(baseN, parseInt(baseNRadix), baseNAlphabet)
-		} catch (e) {
-			console.error(e)
-		}
-		updateBases()
+
+	let expandedBaseId: string | undefined = undefined
+	function expandBase(base: BaseItem) {
+		if (expandedBaseId === base.id) expandedBaseId = undefined
+		else expandedBaseId = base.id
 	}
 
 	updateBases()
-	onMount(() => (number = base10))
 
 	// https://www.seximal.net/names-of-other-bases
 	function getBaseName(base: number): string | null {
@@ -222,69 +256,145 @@
 			][base - 1] ?? null
 		)
 	}
+
+	onMount(() => (number = BigInt(bases.find((b) => b.id === 'base10')!.value)))
+
+	const [send, receive] = crossfade({
+		duration: (d) => Math.sqrt(d * 200),
+
+		fallback(node, params) {
+			const style = getComputedStyle(node)
+			const transform = style.transform === 'none' ? '' : style.transform
+
+			return {
+				duration: 600,
+				easing: quintOut,
+				css: (t) => `
+					transform: ${transform} scale(${t});
+					opacity: ${t}
+				`,
+			}
+		},
+	})
 </script>
 
-<Single>
-	<Input id="base2" label="Base 2 ({getBaseName(2)})" bind:value={base2} on:input={updateBase2} />
-	<Input id="base8" label="Base 8 ({getBaseName(8)})" bind:value={base8} on:input={updateBase8} />
-	<Input
-		id="base10"
-		label="Base 10 ({getBaseName(10)})"
-		bind:value={base10}
-		on:input={updateBase10}
-	/>
-	<Input
-		id="base16"
-		label="Base 16 ({getBaseName(16)})"
-		bind:value={base16}
-		on:input={updateBase16}
-	/>
-	<Input
-		id="base64"
-		label="Base 64 ({getBaseName(64)})"
-		bind:value={base64}
-		on:input={updateBase64}
-	/>
-	<Input id="UTF-8" label="UTF-8" bind:value={utf8} on:input={updateUtf8} />
-	<hr />
-	<div class="base-n-container">
-		<Input id="base-n" bind:value={baseN} on:input={updateBaseN} disabled={!baseNRadix}>
-			<div slot="label">
-				Base
-				<Input id="baseNRadix" bind:value={baseNRadix} on:input={updateBaseNRadix} inline small />
-				({getBaseName(parseInt(baseNRadix))})
-			</div>
-		</Input>
-		<div>
-			<Label for="base-n-alphabet">Character set</Label>
-			<select
-				id="base-n-alphabet"
-				name="base-n-alphabet"
-				bind:value={baseNAlphabet}
-				on:change={lastModified === 'n' ? updateBaseN : updateBases}
+<Double>
+	<Part>
+		{#each bases.filter((b) => b.id !== expandedBaseId) as base (base.id)}
+			<div
+				class="base-container"
+				in:receive={{ key: base.id }}
+				out:send={{ key: base.id }}
+				animate:flip
 			>
-				<option value={alphabet} selected={true}>Normal (0-9 a-z A-Z)</option>
-				<option value={b64Alphabet}>Base64 (A-Z a-z 0-9)</option>
-				<option value="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/">
-					a-z A-Z 0-9
-				</option>
-				<option value="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/">
-					0-9 A-Z a-z
-				</option>
-			</select>
-		</div>
-	</div>
-</Single>
+				<Input id={base.id} bind:value={base.value} on:input={() => updateBase(base)}>
+					<div slot="label">
+						{#if base.base !== 'utf8'}
+							Base
+							{#if base.modifiable}
+								<Input
+									id="{base.id}-radix"
+									bind:value={base.base}
+									on:input={() => updateBaseNRadix(base)}
+									inline
+									small
+								/>
+							{:else}
+								{base.base}
+							{/if}
+							({getBaseName(Number(base.base))})
+						{:else if base.base === 'utf8'}
+							UTF-8
+						{/if}
+						<IconButton arialabel="Expand" on:click={() => expandBase(base)}>⛶</IconButton>
+					</div>
+				</Input>
+
+				{#if base.base !== 'utf8' && base.modifiable}
+					<div>
+						<Label for="base-n-charset">Character set</Label>
+						<select
+							id="base-n-charset"
+							name="base-n-charset"
+							bind:value={baseNcharset}
+							on:change={lastModifiedBaseId === 'n' ? () => updateBase(base) : updateBases}
+						>
+							{#each charsets as charset}
+								<option value={charset.chars}>{charset.name}</option>
+							{/each}
+						</select>
+					</div>
+				{/if}
+			</div>
+		{/each}
+	</Part>
+	{#if expandedBaseId}
+		<Part>
+			{#each bases.filter((b) => b.id === expandedBaseId) as base (base.id)}
+				<div
+					class="base-container"
+					in:receive={{ key: base.id }}
+					out:send={{ key: base.id }}
+					animate:flip
+				>
+					<Input id={base.id} bind:value={base.value} on:input={() => updateBase(base)}>
+						<div slot="label">
+							{#if base.base !== 'utf8'}
+								Base
+								{#if base.modifiable}
+									<Input
+										id="{base.id}-radix"
+										bind:value={base.base}
+										on:input={() => updateBaseNRadix(base)}
+										inline
+										small
+									/>
+								{:else}
+									{base.base}
+								{/if}
+								({getBaseName(Number(base.base))})
+							{:else if base.base === 'utf8'}
+								UTF-8
+							{/if}
+							<IconButton arialabel="Expand" on:click={() => expandBase(base)}>⛶</IconButton>
+						</div>
+					</Input>
+
+					{#if base.base !== 'utf8' && base.modifiable}
+						<div>
+							<Label for="base-n-charset">Character set</Label>
+							<select
+								id="base-n-charset"
+								name="base-n-charset"
+								bind:value={baseNcharset}
+								on:change={lastModifiedBaseId === 'n' ? () => updateBase(base) : updateBases}
+							>
+								{#each charsets as charset}
+									<option value={charset.chars}>{charset.name}</option>
+								{/each}
+							</select>
+						</div>
+					{/if}
+				</div>
+			{/each}
+		</Part>
+	{/if}
+</Double>
 
 <style>
-	.base-n-container {
+	.base-container {
 		display: grid;
+		/* grid-auto-flow: column; */
 		grid-template-columns: 1fr auto;
 		grid-gap: 0.5em;
+		width: 100%;
 	}
-	@media (max-width: 600px) {
+	/* .base-container :nth-child(2) {
+		grid-column: 1 / span 2;
+	} */
+	/* @media (max-width: 600px) {
 		.base-n-container {
 			display: block;
 		}
-	}
+	} */
 </style>

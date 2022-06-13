@@ -110,6 +110,8 @@ export function storeValue(id: string, value: string): void {
  * Get something that was previously stored in localStorage. Will return an empty string if the value is not found.
  */
 export function getValue(id: string): string | undefined {
+	if (!('localStorage' in globalThis)) return
+
 	if (!(id in stores)) {
 		return b64decode(localStorage.getItem(id) || '')
 	} else {
