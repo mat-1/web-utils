@@ -20,7 +20,7 @@
 		return el.innerText.replace(/\n$/, '')
 	}
 
-	export let element: HTMLDivElement | undefined = undefined
+	export let element: HTMLDivElement | HTMLTextAreaElement | undefined = undefined
 
 	function setHtml(el: HTMLTextAreaElement, text: string) {
 		el.innerHTML = text
