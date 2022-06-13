@@ -23,5 +23,8 @@
 			grid-template-columns: 1fr 1fr;
 			grid-template-rows: 1fr 1fr;
 		}
+		.container :global(:nth-child(3)) {
+			grid-column: 1 / span 2;
+		}
 	}
 </style>
