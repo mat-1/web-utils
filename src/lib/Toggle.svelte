@@ -25,11 +25,13 @@
 </script>
 
 <div class="switch-container">
-	<Label><slot /></Label>
-	<label class="switch">
-		<input type="checkbox" bind:checked={value} on:input />
-		<span class="slider" />
-	</label>
+	<Label>
+		<slot />
+		<label class="switch">
+			<input type="checkbox" bind:checked={value} on:input />
+			<span class="slider" />
+		</label>
+	</Label>
 </div>
 
 <style>

@@ -12,7 +12,9 @@
 		<slot />
 	</span>
 {:else}
-	<label class="label" for={_for} {id}><slot /></label>
+	<label class="label" for={_for} {id}>
+		<slot />
+	</label>
 {/if}
 
 <style>
