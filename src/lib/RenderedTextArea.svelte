@@ -27,7 +27,7 @@
 	}
 
 	function handlePaste(e: ClipboardEvent) {
-		const text = e.clipboardData.getData('text/plain')
+		const text = e.clipboardData?.getData('text/plain') ?? ''
 		// execCommand is deprecated but idk how to do this without execCommand lol
 		document.execCommand('insertText', false, text)
 	}
@@ -49,6 +49,10 @@
 
 	function caret(element: Node): number {
 		const sel = window.getSelection()
+		if (!sel) {
+			console.warn('no selection')
+			return 0
+		}
 		const range = sel.getRangeAt(0)
 
 		const range2 = range.cloneRange()
@@ -79,15 +83,15 @@
 		}
 		return pos
 	}
-	function handleKeyDown(e) {
+	function handleKeyDown(e: KeyboardEvent) {
 		if (e.key === 'Enter') {
 			document.execCommand('insertLineBreak')
 			e.preventDefault()
 		}
 	}
 
-	function handleInput(e) {
-		const el = e.target as HTMLTextAreaElement
+	function handleInput(e: InputEventInit) {
+		const el = (e as any).target as HTMLTextAreaElement
 		value = getText(el)
 		dispatch('input', { value })
 		const rendered = render(value)
@@ -111,7 +115,7 @@
 	}
 
 	let spacesTyped = 0
-	function handleBeforeInput(e) {
+	function handleBeforeInput(e: InputEvent) {
 		const el = e.target as HTMLTextAreaElement
 		// ctrl z
 		if (e.inputType == 'historyUndo') {
@@ -145,7 +149,7 @@
 		mounted = true
 		try {
 			// we actually encode the data in localStorage as b64 since otherwise it complains when we put binary
-			value = id ? getValue(id) : ''
+			value = id ? getValue(id) ?? '' : ''
 		} catch (e) {
 			value = ''
 		}
