@@ -17,6 +17,8 @@
 	let baseNRadix = '62'
 	let baseN: string
 
+	let lastModified = ''
+
 	const alphabet = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+/'
 	const b64Alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
 	let baseNAlphabet = b64Alphabet
@@ -75,6 +77,7 @@
 	}
 
 	const updateBase2 = () => {
+		lastModified = '2'
 		try {
 			number = toBase10(base2, 2, alphabet)
 		} catch (e) {
@@ -83,6 +86,7 @@
 		updateBases()
 	}
 	const updateBase8 = () => {
+		lastModified = '8'
 		try {
 			number = toBase10(base8, 8, alphabet)
 		} catch (e) {
@@ -91,6 +95,7 @@
 		updateBases()
 	}
 	const updateBase10 = () => {
+		lastModified = '10'
 		try {
 			number = toBase10(base10, 10, alphabet)
 		} catch (e) {
@@ -99,6 +104,7 @@
 		updateBases()
 	}
 	const updateBase16 = () => {
+		lastModified = '16'
 		try {
 			number = toBase10(base16, 16, alphabet)
 		} catch (e) {
@@ -107,6 +113,7 @@
 		updateBases()
 	}
 	const updateBase64 = () => {
+		lastModified = '64'
 		try {
 			number = toBase10(base64.replace(/=/g, ''), 64, b64Alphabet)
 		} catch (e) {
@@ -115,6 +122,7 @@
 		updateBases()
 	}
 	const updateUtf8 = () => {
+		lastModified = 'utf8'
 		try {
 			number = toBase10(b64encode(utf8).replace(/=/g, ''), 64, b64Alphabet)
 		} catch (e) {
@@ -130,6 +138,7 @@
 		if (baseNRadix !== '') updateBases()
 	}
 	const updateBaseN = () => {
+		lastModified = 'n'
 		try {
 			number = toBase10(baseN, parseInt(baseNRadix), baseNAlphabet)
 		} catch (e) {
@@ -252,7 +261,7 @@
 				id="base-n-alphabet"
 				name="base-n-alphabet"
 				bind:value={baseNAlphabet}
-				on:change={updateBaseN}
+				on:change={lastModified === 'n' ? updateBaseN : updateBases}
 			>
 				<option value={alphabet} selected={true}>Normal (0-9 a-z A-Z)</option>
 				<option value={b64Alphabet}>Base64 (A-Z a-z 0-9)</option>
