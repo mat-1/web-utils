@@ -1,17 +1,50 @@
 <script lang="ts">
+	import { browser } from '$app/env'
 	import { page } from '$app/stores'
+	import { createEventDispatcher, onMount } from 'svelte'
 
 	export let href: string | undefined
 	export let isThisPage = false
-	page.subscribe((p) => {
+	let pageLoaded = false
+
+	const dispatch = createEventDispatcher()
+
+	let el: HTMLLIElement
+
+	page.subscribe(async (p) => {
 		isThisPage = href === p.url.pathname
+		if (browser && !el)
+			// wait until el is defined
+			await new Promise((resolve) => setTimeout(resolve, 0))
+		if (isThisPage) dispatch('select', el)
+	})
+
+	onMount(() => {
+		pageLoaded = true
 	})
 </script>
 
 {#if href}
-	<li class:selected={isThisPage} class="anchor-list-item"><a {href} on:click><slot /></a></li>
+	<li
+		class:selected={isThisPage}
+		class:show-selected-background={isThisPage && !pageLoaded}
+		class="anchor-list-item"
+		bind:this={el}
+	>
+		<a {href} on:click>
+			<slot />
+		</a>
+	</li>
 {:else}
-	<li class:selected={isThisPage} on:click tabindex="0"><slot /></li>
+	<li
+		class:selected={isThisPage}
+		class:show-selected-background={isThisPage && !pageLoaded}
+		on:click
+		tabindex="0"
+		bind:this={el}
+	>
+		<slot />
+	</li>
 {/if}
 
 <style>
@@ -21,7 +54,8 @@
 		word-wrap: break-word;
 		color: var(--text-color);
 		margin: 0.25em;
-		opacity: 0.9;
+		/* position: relative; */
+		z-index: 10;
 	}
 	.anchor-list-item {
 		padding: 0;
@@ -34,9 +68,11 @@
 		height: 100%;
 		display: inline-block;
 		padding: 0.25em 1em;
+		z-index: 10;
+		position: relative;
 	}
 
-	.selected {
+	.show-selected-background {
 		background-color: var(--background-color-alt-3);
 	}
 </style>
