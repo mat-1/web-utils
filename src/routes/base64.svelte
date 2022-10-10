@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ClickableUrlsTextArea from '$lib/ClickableUrlsTextArea.svelte'
+	import TextArea from '$lib/TextArea/index.svelte'
 	import Double from '$lib/containers/Double.svelte'
 	import { b64decode, b64encode } from '$lib/utils'
 	import { afterNavigate } from '$app/navigation'
@@ -60,7 +60,7 @@
 				id="base64-lines-separately">Encode lines separately</Toggle
 			>
 		</Options>
-		<ClickableUrlsTextArea
+		<TextArea
 			bind:value={decoded}
 			bind:element={decodedTextArea}
 			id="base64-decoded"
@@ -69,7 +69,7 @@
 		/>
 	</Part>
 	<Part>
-		<ClickableUrlsTextArea
+		<TextArea
 			bind:value={encoded}
 			bind:element={encodedTextArea}
 			id="base64-encoded"

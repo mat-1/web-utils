@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ClickableUrlsTextArea from '$lib/ClickableUrlsTextArea.svelte'
+	import TextArea from '$lib/TextArea/index.svelte'
 	import Double from '$lib/containers/Double.svelte'
 	import Options from '$lib/containers/Options.svelte'
 	import Part from '$lib/containers/Part.svelte'
@@ -68,12 +68,7 @@
 			</Toggle>
 		</Options>
 
-		<ClickableUrlsTextArea
-			bind:value={decoded}
-			id="html-decoded"
-			on:input={updateEncoded}
-			label="Plaintext"
-		/>
+		<TextArea bind:value={decoded} id="html-decoded" on:input={updateEncoded} label="Plaintext" />
 	</Part>
 	<Part>
 		<TextArea

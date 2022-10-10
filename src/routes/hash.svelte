@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ClickableUrlsTextArea from '$lib/ClickableUrlsTextArea.svelte'
+	import TextArea from '$lib/TextArea/index.svelte'
 	import Label from '$lib/Label.svelte'
 	import { browser } from '$app/env'
 	import * as hashWasm from 'hash-wasm'
@@ -29,7 +29,7 @@
 
 <Double>
 	<Part>
-		<ClickableUrlsTextArea bind:value={string} id="hash-string" label="String" />
+		<TextArea bind:value={string} id="hash-string" label="String" />
 	</Part>
 	<Part>
 		<Label>MD5</Label>

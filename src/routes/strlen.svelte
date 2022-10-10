@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ClickableUrlsTextArea from '$lib/ClickableUrlsTextArea.svelte'
+	import TextArea from '$lib/TextArea/index.svelte'
 	import Double from '$lib/containers/Double.svelte'
 	import Part from '$lib/containers/Part.svelte'
 	import Label from '$lib/Label.svelte'
@@ -30,7 +30,7 @@
 
 <Double>
 	<Part>
-		<ClickableUrlsTextArea bind:value={string} id="strlen-string" label="String" />
+		<TextArea bind:value={string} id="strlen-string" label="String" />
 	</Part>
 	<Part>
 		<Label>Characters</Label>
