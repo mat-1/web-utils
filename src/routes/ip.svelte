@@ -11,6 +11,23 @@
 	const maxIpv6 = 2n ** 128n - 1n
 	const maxIpv4 = 2n ** 32n - 1n
 
+	function ipv4ToNumber(ip: string): number | null {
+		if (!ip.includes('.')) {
+			return Number(ip) ?? null
+		}
+		const parts = ip.split('.')
+		if (parts.length === 2) return Number(parts[0]) * 256 * 256 * 256 + Number(parts[1])
+		if (parts.length === 3)
+			return Number(parts[0]) * 256 * 256 * 256 + Number(parts[1]) * 256 * 256 + Number(parts[2])
+		if (parts.length === 4)
+			return (
+				Number(parts[0]) * 256 * 256 * 256 +
+				Number(parts[1]) * 256 * 256 +
+				Number(parts[2]) * 256 +
+				Number(parts[3])
+			)
+	}
+
 	function ipToNumber(ip: string): bigint | null {
 		// support ipv4 and ipv6
 		let ipNumber = 0n
@@ -26,10 +43,9 @@
 				}
 
 				if (ipPart.includes('.')) {
-					const ipv4Parts = ipPart.split('.')
-					for (const ipv4Part of ipv4Parts) {
-						ipNumber = ipNumber * 256n + BigInt(ipv4Part)
-					}
+					const ipv4Number = ipv4ToNumber(ipPart)
+					if (ipv4Number === null) return null
+					ipNumber = ipNumber * 256n * 256n * 256n + BigInt(ipv4Number)
 				} else {
 					if (!/^[0-9a-fA-F]+$/.test(ipPart)) {
 						throw new Error('Invalid IP')
