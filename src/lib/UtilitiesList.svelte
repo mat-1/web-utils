@@ -23,10 +23,11 @@
 				return matchesSearchQuery(searchQuery, u.name)
 			})
 			.sort((a, b) => a.name.length - b.name.length)
-		requestAnimationFrame(() => {
-			instantBackgroundMove = true
-			updateSelectedItemBackground()
-		})
+		if (browser)
+			requestAnimationFrame(() => {
+				instantBackgroundMove = true
+				updateSelectedItemBackground()
+			})
 	}
 
 	let searchBarEl: HTMLInputElement
