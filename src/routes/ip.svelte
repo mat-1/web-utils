@@ -150,7 +150,7 @@
 
 <Double>
 	<Part>
-		<Input id="uuid-input" label="IP or range" bind:value={inputIp} />
+		<Input id="ip-input" label="IP or range" bind:value={inputIp} />
 	</Part>
 	<Part>
 		{#if inputIsRange}
