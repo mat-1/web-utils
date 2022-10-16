@@ -183,4 +183,8 @@ export const utilities = [
 		name: 'Datetime',
 		href: '/datetime',
 	},
+	{
+		name: 'IP Address',
+		href: '/ip',
+	},
 ]
