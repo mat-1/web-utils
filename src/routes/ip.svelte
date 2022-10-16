@@ -145,10 +145,18 @@
 			<p>{startIpv6}-{endIpv6}</p>
 			<Label>Number</Label>
 			<p>{startNumber}-{endNumber}</p>
-			<Label>IPv4 CIDR</Label>
-			<p>{asIpv4Cidr}</p>
-			<Label>IPv6 CIDR</Label>
-			<p>{asIpv6Cidr}</p>
+			{#if asIpv4Cidr}
+				<Label>IPv4 CIDR</Label>
+				<p>{asIpv4Cidr}</p>
+			{/if}
+			{#if asIpv6Cidr}
+				<Label>IPv6 CIDR</Label>
+				<p>{asIpv6Cidr}</p>
+			{/if}
+			{#if endNumber !== null && startNumber !== null}
+				<Label>Count</Label>
+				<p>{endNumber - startNumber + 1n}</p>
+			{/if}
 		{:else}
 			<Label>Type</Label>
 			<p>
