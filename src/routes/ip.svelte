@@ -165,13 +165,3 @@
 		{/if}
 	</Part>
 </Double>
-
-<style>
-	ul {
-		margin: 0;
-		padding-left: 1.5em;
-	}
-	.supported-uuids {
-		opacity: 0.5;
-	}
-</style>
