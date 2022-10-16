@@ -16,20 +16,44 @@
 		return normalize(value).includes(normalize(query))
 	}
 
-	$: shownListItems = utilities
-		.filter((u) => {
-			return matchesSearchQuery(searchQuery, u.name)
+	let shownListItems: typeof utilities[number][] = []
+	$: {
+		shownListItems = utilities
+			.filter((u) => {
+				return matchesSearchQuery(searchQuery, u.name)
+			})
+			.sort((a, b) => a.name.length - b.name.length)
+		requestAnimationFrame(() => {
+			instantBackgroundMove = true
+			updateSelectedItemBackground()
 		})
-		.sort((a, b) => a.name.length - b.name.length)
+	}
 
 	let searchBarEl: HTMLInputElement
 
-	function onSearchKeydown(event: KeyboardEvent) {
+	async function onSearchKeydown(event: KeyboardEvent) {
 		console.log(event)
 		if (event.key === 'Enter') {
 			if (searchQuery.length > 0 && shownListItems.length > 0 && 'href' in shownListItems[0]) {
 				goto(shownListItems[0].href)
 			}
+		}
+		// down and up arrow
+		if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+			const direction = event.key === 'ArrowDown' ? 1 : -1
+			const current = shownListItems.findIndex((u) => u.href === $page.url.pathname)
+			let next = current + direction
+
+			// wrap around
+			if (next > shownListItems.length - 1) {
+				next = 0
+			} else if (next < 0) {
+				next = shownListItems.length - 1
+			}
+
+			await goto(shownListItems[next].href)
+			// select search bar again
+			searchBarEl.focus()
 		}
 	}
 
@@ -58,7 +82,6 @@
 
 	let instantBackgroundMove = true
 	function updateSelectedItemBackground() {
-		console.log('selectedEl', selectedItemEl?.textContent ?? selectedItemEl)
 		if (!browser) return
 		if (!selectedItemEl) {
 			console.warn('No selected element in list')
