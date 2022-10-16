@@ -19,13 +19,12 @@
 		if (parts.length === 2) return Number(parts[0]) * 256 * 256 * 256 + Number(parts[1])
 		if (parts.length === 3)
 			return Number(parts[0]) * 256 * 256 * 256 + Number(parts[1]) * 256 * 256 + Number(parts[2])
-		if (parts.length === 4)
-			return (
-				Number(parts[0]) * 256 * 256 * 256 +
-				Number(parts[1]) * 256 * 256 +
-				Number(parts[2]) * 256 +
-				Number(parts[3])
-			)
+		// ok we can just do normal conversion if it's >= 4 parts
+		let result = 0
+		for (const part of parts) {
+			result = result * 256 + Number(part)
+		}
+		return result
 	}
 
 	function ipToNumber(ip: string): bigint | null {
