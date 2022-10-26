@@ -127,6 +127,7 @@
 		{#each shownListItems as utility (utility.name)}
 			<ListItem
 				href={utility.href}
+				icon={utility.icon}
 				on:select={(e) => {
 					selectedItemEl = e.detail
 				}}>{utility.name}</ListItem

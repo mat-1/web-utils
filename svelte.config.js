@@ -37,7 +37,7 @@ const config = {
 					? {
 						hmr: {
 							protocol: 'wss',
-							port: 443,
+							port: 3001,
 						},
 					}
 					: {},

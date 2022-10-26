@@ -138,53 +138,78 @@ export function gotoDatetime(date: Date) {
 	goto('/datetime')
 }
 
+import Base64 from './icons/utils/Base64.svelte'
+import BaseN from './icons/utils/BaseN.svelte'
+import Datetime from './icons/utils/Datetime.svelte'
+import Diff from './icons/utils/Diff.svelte'
+import Fmt from './icons/utils/Fmt.svelte'
+import Hash from './icons/utils/Hash.svelte'
+import Html from './icons/utils/Html.svelte'
+import Ip from './icons/utils/Ip.svelte'
+import Lipsum from './icons/utils/Lipsum.svelte'
+import Strlen from './icons/utils/Strlen.svelte'
+import Url from './icons/utils/Url.svelte'
+import Uuid from './icons/utils/Uuid.svelte'
+
 export const utilities = [
 	{
 		name: 'Base64 Encode/Decode',
 		href: '/base64',
+		icon: Base64,
 	},
 	{
 		name: 'Text Diff',
 		href: '/diff',
+		icon: Diff,
 	},
 	{
 		name: 'URL Encode/Decode',
 		href: '/url',
+		icon: Url,
 	},
 	{
 		name: 'Base Converter',
 		href: '/basen',
+		icon: BaseN,
 	},
 	{
 		name: 'Lorem Ipsum',
 		href: '/lipsum',
+		icon: Lipsum,
 	},
 	{
 		name: 'UUID Inspector',
 		href: '/uuid',
+		icon: Uuid,
 	},
 	{
 		name: 'String Length',
 		href: '/strlen',
+		icon: Strlen,
 	},
 	{
 		name: 'String Hash',
 		href: '/hash',
+		icon: Hash,
 	},
 	{
 		name: 'JSON Formatter',
 		href: '/fmt',
+		icon: Fmt,
 	},
 	{
 		name: 'HTML Encode/Decode',
-		href: '/htmlentities',
+		href: '/html',
+		icon: Html,
 	},
 	{
 		name: 'Datetime',
 		href: '/datetime',
+		icon: Datetime,
 	},
 	{
 		name: 'IP Address',
 		href: '/ip',
+		icon: Ip,
 	},
 ]

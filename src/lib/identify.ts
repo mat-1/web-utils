@@ -43,7 +43,7 @@ export function identifyAndGoto(str: string): boolean {
 	if (/&\d{2};/.test(str)) {
 		storeValue('html-encoded', str)
 		storeValue('html-decoded', '')
-		goto('/htmlentities')
+		goto('/html')
 		return true
 	}
 

@@ -5,6 +5,7 @@
 
 	export let href: string | undefined
 	export let isThisPage = false
+	export let icon: any | undefined = undefined
 	let pageLoaded = false
 
 	const dispatch = createEventDispatcher()
@@ -32,6 +33,11 @@
 		bind:this={el}
 	>
 		<a {href} on:click>
+			{#if icon}
+				<span class="icon">
+					<svelte:component this={icon} />
+				</span>
+			{/if}
 			<slot />
 		</a>
 	</li>
@@ -43,6 +49,11 @@
 		tabindex="0"
 		bind:this={el}
 	>
+		{#if icon}
+			<span class="icon">
+				<svelte:component this={icon} />
+			</span>
+		{/if}
 		<slot />
 	</li>
 {/if}
@@ -67,12 +78,25 @@
 		width: 100%;
 		height: 100%;
 		display: inline-block;
-		padding: 0.25em 1em;
+		padding: 0.25em 0.45em;
 		z-index: 10;
 		position: relative;
 	}
 
 	.show-selected-background {
 		background-color: var(--background-color-alt-3);
+	}
+
+	.icon :global(svg) {
+		stroke: var(--text-color-dark);
+		stroke-width: 6px;
+		fill: none;
+		height: auto;
+		width: 1em;
+		display: inline-block;
+		padding: 0;
+		margin: 0;
+		position: relative;
+		top: 0.1em;
 	}
 </style>
