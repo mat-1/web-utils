@@ -47,5 +47,20 @@ export function identifyAndGoto(str: string): boolean {
 		return true
 	}
 
+	// html decode
+	if (/&\d{2};/.test(str)) {
+		storeValue('html-encoded', str)
+		storeValue('html-decoded', '')
+		goto('/html')
+		return true
+	}
+
+	// ip address
+	if (/\d+\.\d+\.\d+\.\d+/.test(str)) {
+		storeValue('ip-input', str)
+		goto('/ip')
+		return true
+	}
+
 	return false
 }
