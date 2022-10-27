@@ -8,27 +8,75 @@
 	import Triple from '$lib/containers/Triple.svelte'
 	import Part from '$lib/containers/Part.svelte'
 	import Options from '$lib/containers/Options.svelte'
+	import Spinner from '$lib/Spinner.svelte'
+
+	let syncWorker: Worker | undefined = undefined
+
+	let loading = false
+
+	let currentId = 0
+
+	let renderedDiff = ''
+	const loadWorker = async () => {
+		let SyncWorker: typeof import('*?worker')
+		try {
+			SyncWorker = await import('$lib/diff-worker?worker')
+			syncWorker = new SyncWorker.default()
+		} catch (e) {
+			console.error(e)
+			return
+		}
+
+		syncWorker.addEventListener('message', (event) => {
+			const { data } = event
+			const thisId = data.id
+			if (thisId === currentId) {
+				renderedDiff = data.diff
+				loading = false
+			}
+		})
+		syncWorker.addEventListener('error', (event) => {
+			console.error(event)
+			if (
+				event.message ===
+				'SyntaxError: import declarations may only appear at top level of a module'
+			) {
+				console.log(
+					"Disabling diff worker, this browser doesn't support esm workers: https://github.com/vitejs/vite/issues/4586 https://caniuse.com/mdn-api_worker_worker_ecmascript_modules https://bugzilla.mozilla.org/show_bug.cgi?id=1247687"
+				)
+				syncWorker = undefined
+				renderDiff()
+			}
+		})
+		renderDiff()
+	}
 
 	let before: string
 	let after: string
 
-	let renderedDiff = ''
-
 	function renderDiff() {
-		const diff = fastDiff(before, after)
-		renderedDiff = ''
-		for (const [type, difference] of diff) {
-			switch (type) {
-				case 0:
-					renderedDiff += encodeHtml(difference)
-					break
-				case 1:
-					renderedDiff += `<span class="diff-added">${encodeHtml(difference)}</span>`
-					break
-				case -1:
-					renderedDiff += `<span class="diff-removed">${encodeHtml(difference)}</span>`
-					break
+		if (!syncWorker) {
+			loading = true
+			const diff = fastDiff(before, after)
+			renderedDiff = ''
+			for (const [type, difference] of diff) {
+				switch (type) {
+					case 0:
+						renderedDiff += encodeHtml(difference)
+						break
+					case 1:
+						renderedDiff += `<span class="diff-added">${encodeHtml(difference)}</span>`
+						break
+					case -1:
+						renderedDiff += `<span class="diff-removed">${encodeHtml(difference)}</span>`
+						break
+				}
 			}
+			loading = false
+		} else {
+			loading = true
+			currentId++
+			syncWorker.postMessage({ before, after, id: currentId })
 		}
 	}
 
@@ -37,7 +85,7 @@
 		renderDiff()
 	}
 
-	onMount(renderDiff)
+	onMount(loadWorker)
 </script>
 
 <Triple>
@@ -53,10 +101,18 @@
 		<TextArea bind:value={after} id="diff-after" label="After" on:input={renderDiff} />
 	</Part>
 	<Part>
-		<Label id="diff-label" for="rendered-diff" simulateLabel>Diff</Label>
-		<p class="rendered-diff" id="rendered-diff" aria-labelledby="diff-label">
-			{@html renderedDiff}
-		</p>
+		<div class="diff-container">
+			<Label id="diff-label" for="rendered-diff" simulateLabel>Diff</Label>
+			<div class="rendered-diff" id="rendered-diff" aria-labelledby="diff-label">
+				{#if loading}
+					<div class="loader">
+						<Spinner />
+					</div>
+				{:else}
+					{@html renderedDiff}
+				{/if}
+			</div>
+		</div>
 	</Part>
 </Triple>
 
@@ -70,10 +126,15 @@
 	.rendered-diff {
 		white-space: pre-wrap;
 		word-wrap: break-word;
-	}
-
-	p {
+		display: block;
+		height: 100%;
 		margin: 0;
+		overflow: auto;
+	}
+	.diff-container {
+		height: 100%;
+		display: flex;
+		flex-direction: column;
 	}
 
 	.swap-button {
@@ -82,5 +143,12 @@
 		font-size: inherit;
 		padding: 0;
 		margin: 0;
+	}
+
+	.loader {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 100%;
 	}
 </style>

@@ -133,7 +133,7 @@ export function decodeHtml(str: string): string {
 	return decoded ?? ''
 }
 
-export function gotoDatetime(date: Date) {
+export function gotoDatetime(date: Date): void {
 	storeValue('datetime-input', date.toString())
 	goto('/datetime')
 }
