@@ -100,7 +100,9 @@ export function storeValue(id: string, value: string): void {
 		stores[id] = store
 		storeValues[id] = value
 		store.subscribe((v) => {
-			localStorage.setItem(id, b64encode(v, false))
+			// if it's too long, don't store anything
+			if (v.length > 100000) localStorage.setItem(id, '')
+			else localStorage.setItem(id, b64encode(v, false))
 			storeValues[id] = v
 		})
 	} else stores[id].set(value)
