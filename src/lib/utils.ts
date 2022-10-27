@@ -214,4 +214,8 @@ export const utilities = [
 		href: '/ip',
 		icon: Ip,
 	},
+	{
+		name: 'Float inspector',
+		href: '/float',
+	},
 ]
