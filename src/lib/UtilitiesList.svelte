@@ -53,7 +53,7 @@
 				await goto(shownListItems[0].href)
 
 				// select the first selectable thing in `main`
-				const firstSelectable = document.querySelector('main textarea, main input')
+				const firstSelectable = document.querySelector('main textarea, main input[type="text"]')
 				if (firstSelectable) {
 					;(firstSelectable as HTMLInputElement).focus()
 				}
