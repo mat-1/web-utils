@@ -143,7 +143,6 @@
 	</ul>
 	<div class="credits">
 		<p>
-			By <a href="//matdoes.dev">mat</a>.
 			<a href="//github.com/mat-1/web-utils">Source</a>
 		</p>
 	</div>
