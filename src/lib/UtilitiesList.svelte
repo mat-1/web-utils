@@ -32,29 +32,26 @@
 
 	let searchBarEl: HTMLInputElement
 
+	async function goInDirection(direction: 1 | -1) {
+		const current = shownListItems.findIndex((u) => u.href === $page.url.pathname)
+		let next = current + direction
+
+		// wrap around
+		if (next > shownListItems.length - 1) {
+			next = 0
+		} else if (next < 0) {
+			next = shownListItems.length - 1
+		}
+
+		await goto(shownListItems[next].href, { keepfocus: true })
+	}
+
 	async function onSearchKeydown(event: KeyboardEvent) {
 		console.log(event)
 		if (event.key === 'Enter') {
 			if (searchQuery.length > 0 && shownListItems.length > 0 && 'href' in shownListItems[0]) {
 				goto(shownListItems[0].href)
 			}
-		}
-		// down and up arrow
-		if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
-			const direction = event.key === 'ArrowDown' ? 1 : -1
-			const current = shownListItems.findIndex((u) => u.href === $page.url.pathname)
-			let next = current + direction
-
-			// wrap around
-			if (next > shownListItems.length - 1) {
-				next = 0
-			} else if (next < 0) {
-				next = shownListItems.length - 1
-			}
-
-			await goto(shownListItems[next].href)
-			// select search bar again
-			searchBarEl.focus()
 		}
 	}
 
@@ -70,6 +67,16 @@
 		if (event.ctrlKey && event.key === '/') {
 			searchBarEl.focus()
 			event.preventDefault()
+		}
+		// down and up arrow
+		if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+			// only if the target is the body or the search bar
+			if (event.target === document.body || event.target === searchBarEl) {
+				console.log(event)
+				const direction = event.key === 'ArrowDown' ? 1 : -1
+				goInDirection(direction)
+				event.preventDefault()
+			}
 		}
 	}
 
