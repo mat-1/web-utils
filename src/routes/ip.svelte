@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { extractData, supportedUuidTypes, uuidDatas } from '$lib/uuid'
-	import type { UuidData } from '$lib/uuid'
 	import Input from '$lib/Input.svelte'
 	import Label from '$lib/Label.svelte'
 	import Double from '$lib/containers/Double.svelte'
