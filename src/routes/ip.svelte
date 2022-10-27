@@ -29,7 +29,11 @@
 		// support ipv4 and ipv6
 		let ipNumber = 0n
 		if (!ip.includes(':') && !ip.includes('.')) {
-			return BigInt(ip) ?? null
+			try {
+				return BigInt(ip) ?? null
+			} catch (e) {
+				return null
+			}
 		}
 		const ipParts = ip.split(':')
 		try {
@@ -60,7 +64,6 @@
 			return null
 		}
 
-		console.log('ipNumber', ipNumber)
 		return ipNumber
 	}
 
@@ -170,13 +173,15 @@
 				<Label>Count</Label>
 				<p>{endNumber - startNumber + 1n}</p>
 			{/if}
-		{:else}
+		{:else if numericIp !== null}
 			<Label>Type</Label>
 			<p>
 				{inputIp.includes(':') ? 'IPv6' : inputIp.includes('.') ? 'IPv4' : 'Number'}
 			</p>
-			<Label>IPv4</Label>
-			<p>{asIpv4}</p>
+			{#if asIpv4}
+				<Label>IPv4</Label>
+				<p>{asIpv4}</p>
+			{/if}
 			<Label>IPv6</Label>
 			<p>{asIpv6}</p>
 			<Label>Number</Label>
