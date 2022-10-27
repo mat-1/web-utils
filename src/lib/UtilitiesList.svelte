@@ -50,7 +50,13 @@
 		console.log(event)
 		if (event.key === 'Enter') {
 			if (searchQuery.length > 0 && shownListItems.length > 0 && 'href' in shownListItems[0]) {
-				goto(shownListItems[0].href)
+				await goto(shownListItems[0].href)
+
+				// select the first selectable thing in `main`
+				const firstSelectable = document.querySelector('main textarea, main input')
+				if (firstSelectable) {
+					;(firstSelectable as HTMLInputElement).focus()
+				}
 			}
 		}
 	}
@@ -93,6 +99,7 @@
 		if (!browser) return
 		if (!selectedItemEl) {
 			console.warn('No selected element in list')
+			if (selectedItemBackgroundEl) selectedItemBackgroundEl.style.display = 'none'
 			return
 		}
 		if (instantBackgroundMove) {
@@ -106,6 +113,7 @@
 		selectedItemBackgroundEl.style.width = selectedItemEl.offsetWidth + 'px'
 		selectedItemBackgroundEl.style.height = selectedItemEl.offsetHeight + 'px'
 		selectedItemBackgroundEl.style.transform = `translate(${selectedItemEl.offsetLeft}px, ${selectedItemEl.offsetTop}px)`
+		selectedItemBackgroundEl.style.display = ''
 	}
 </script>
 
