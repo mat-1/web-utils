@@ -97,9 +97,11 @@
 	let instantBackgroundMove = true
 	function updateSelectedItemBackground() {
 		if (!browser) return
+		if (!selectedItemBackgroundEl) return
 		if (!selectedItemEl) {
 			console.warn('No selected element in list')
-			if (selectedItemBackgroundEl) selectedItemBackgroundEl.style.display = 'none'
+			selectedItemBackgroundEl.style.display = 'none'
+			instantBackgroundMove = true
 			return
 		}
 		if (instantBackgroundMove) {
@@ -113,8 +115,18 @@
 		selectedItemBackgroundEl.style.width = selectedItemEl.offsetWidth + 'px'
 		selectedItemBackgroundEl.style.height = selectedItemEl.offsetHeight + 'px'
 		selectedItemBackgroundEl.style.transform = `translate(${selectedItemEl.offsetLeft}px, ${selectedItemEl.offsetTop}px)`
-		selectedItemBackgroundEl.style.display = ''
+		selectedItemBackgroundEl.style.display = 'block'
 	}
+
+	// update selectedItemEl when the page changes
+	page.subscribe((page) => {
+		if (!browser) return
+		const selected = document.querySelector(`li[data-href="${page.url.pathname}"]`)
+		if (selected) {
+			selectedItemEl = selected as HTMLLIElement
+			updateSelectedItemBackground()
+		}
+	})
 </script>
 
 <svelte:window
@@ -140,13 +152,7 @@
 	<ul>
 		<div class="selected-background" bind:this={selectedItemBackgroundEl} />
 		{#each shownListItems as utility (utility.name)}
-			<ListItem
-				href={utility.href}
-				icon={utility.icon}
-				on:select={(e) => {
-					selectedItemEl = e.detail
-				}}>{utility.name}</ListItem
-			>
+			<ListItem href={utility.href} icon={utility.icon}>{utility.name}</ListItem>
 		{/each}
 	</ul>
 	<div class="credits">

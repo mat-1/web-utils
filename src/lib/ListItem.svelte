@@ -30,6 +30,7 @@
 		class:selected={isThisPage}
 		class:show-selected-background={isThisPage && !pageLoaded}
 		class="anchor-list-item"
+		data-href={href}
 		bind:this={el}
 	>
 		<a {href} on:click>
