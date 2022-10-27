@@ -54,9 +54,16 @@
 	let before: string
 	let after: string
 
-	function renderDiff() {
+	async function renderDiff() {
+		if (before.length > 1000 || after.length > 1000) loading = true
+
 		if (!syncWorker) {
-			loading = true
+			if (loading) {
+				// wait two animation frames to make sure the spinner shows up
+				await new Promise((resolve) => requestAnimationFrame(resolve))
+				await new Promise((resolve) => requestAnimationFrame(resolve))
+			}
+
 			const diff = fastDiff(before, after)
 			renderedDiff = ''
 			for (const [type, difference] of diff) {
@@ -74,7 +81,6 @@
 			}
 			loading = false
 		} else {
-			loading = true
 			currentId++
 			syncWorker.postMessage({ before, after, id: currentId })
 		}
