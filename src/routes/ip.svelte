@@ -26,6 +26,8 @@
 	}
 
 	function ipToNumber(ip: string): bigint | null {
+		if (ip.trim() === '') return null
+
 		// support ipv4 and ipv6
 		let ipNumber = 0n
 		if (!ip.includes(':') && !ip.includes('.')) {
