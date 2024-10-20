@@ -52,7 +52,7 @@
 		{#each shownDatas as { name, value }}
 			<Label>{name}</Label>
 			{#if name == 'Timestamp'}
-				<p><a href="/datetime?date={value}">{value}</a></p>
+				<p><a href="/datetime?date={value.toISOString()}">{value.toISOString()}</a></p>
 			{:else}
 				<p>{value}</p>
 			{/if}

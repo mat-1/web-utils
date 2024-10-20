@@ -52,5 +52,6 @@
 		"hash-wasm": "^4.9.0",
 		"svelte": "^3.48.0",
 		"svelte-check": "^2.7.2"
-	}
+	},
+	"packageManager": "yarn@1.22.19+sha1.4ba7fc5c6e704fce2066ecbfb0b0d8976fe62447"
 }
