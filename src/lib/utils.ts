@@ -32,28 +32,6 @@ export function fromBinary(binary: string): string {
 	return result
 }
 
-function utf8decode(str: string): string {
-	let output = ''
-
-	for (let i = 0; i < str.length; i++) {
-		const c = str.charCodeAt(i)
-
-		if (c < 128) {
-			output += String.fromCharCode(c)
-		} else if (c > 191 && c < 224) {
-			const c2 = str.charCodeAt(i + 1)
-			output += String.fromCharCode(((c & 31) << 6) | (c2 & 63))
-			i++
-		} else {
-			const c2 = str.charCodeAt(i + 1)
-			const c3 = str.charCodeAt(i + 2)
-			output += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63))
-			i += 2
-		}
-	}
-	return output
-}
-
 const base64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='
 const nonBase64CharsRegex = /[^A-Za-z0-9+/=]|=+$/g
 
