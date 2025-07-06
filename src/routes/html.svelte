@@ -33,14 +33,14 @@
 			}
 			return result
 		} else {
-			const el = document.createElement('p')
+			const el = document.createElement('template')
 			el.textContent = str
 			return el.innerHTML
 		}
 	}
 
 	function decodeHTMLEntities(str: string): string {
-		const el = document.createElement('p')
+		const el = document.createElement('template')
 		el.innerHTML = str
 		return el.textContent ?? ''
 	}

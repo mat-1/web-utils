@@ -128,7 +128,7 @@ export function encodeHtml(str: string): string {
 }
 
 export function decodeHtml(str: string): string {
-	const p = document.createElement('p')
+	const p = document.createElement('template')
 	p.innerHTML = str
 	const decoded = p.textContent
 	p.remove()
